@@ -13,7 +13,7 @@ export const profile = {
   email: "tulare789@gmail.com",
   phone: "650-613-3888",
   github: "https://github.com/Scooter1946",
-  linkedin: "https://www.linkedin.com/in/justinchen", // placeholder — update with your real URL
+  linkedin: "https://www.linkedin.com/in/justin-chen-a60a8a283/",
   resume: "/resume.pdf",
   funFact:
     "I once got boba 14 days in a row my senior year of high school. Still chasing that high.",
