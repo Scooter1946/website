@@ -1,0 +1,91 @@
+---
+import { places, interests, profile, gallery } from "../data/site";
+
+// duplicated so the film strip can loop seamlessly
+const strip = [...gallery, ...gallery];
+---
+
+<section id="beyond" class="bg-paper py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <p class="reveal mb-10 font-mono text-[12px] tracking-wide text-graphite">outside of work</p>
+    <div class="grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-16">
+      <!-- left: heading, with the travel film strip anchored bottom-left -->
+      <div class="reveal flex min-w-0 flex-col">
+        <h2 class="text-[26px] font-medium leading-tight">When I'm not coding</h2>
+        <div class="mt-10 md:mt-auto md:pt-12">
+          <p class="mb-3 font-mono text-[12px] tracking-wide text-graphite">through my lens</p>
+          <div class="film">
+            <div class="film-track flex w-max gap-3">
+              {
+                strip.map((g) => (
+                  <img
+                    src={g.src}
+                    alt={g.caption}
+                    loading="lazy"
+                    class="h-48 w-auto shrink-0 rounded-lg object-cover sm:h-60"
+                  />
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: the words -->
+      <div class="reveal min-w-0 space-y-7 text-[18px] leading-relaxed text-ink/80">
+        <p>
+          When I step away from the keyboard, you'll usually find me planning my next trip, playing
+          center-mid in a weekend league, putting friends onto new music, or talking someone into a
+          restaurant I just found.
+        </p>
+        <ul class="flex flex-wrap gap-2.5">
+          {
+            interests.map((i) => (
+              <li class="rounded-full bg-paper-2 px-4 py-1.5 text-[14px] text-ink/80">{i}</li>
+            ))
+          }
+        </ul>
+        <div>
+          <p class="mb-2.5 text-[14px] text-graphite">places I've loved so far:</p>
+          <ul class="flex flex-wrap gap-2">
+            {
+              places.map((p) => (
+                <li class="rounded-full border border-copper/40 px-3 py-1 text-[13px] text-copper">
+                  {p}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="rounded-2xl border border-copper/30 bg-paper-2/60 p-5">
+          <p class="font-mono text-[12px] tracking-wide text-copper">fun fact</p>
+          <p class="mt-1.5 text-[17px] leading-relaxed text-ink/85">{profile.funFact}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .film {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .film-track {
+    animation: film-right 26s linear infinite;
+  }
+  @keyframes film-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .film-track {
+      animation: none;
+    }
+  }
+</style>

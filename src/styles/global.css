@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* ── Design tokens: sampled from a silicon die micrograph ───────────── */
+@theme {
+  --color-ink: #2b1c14;        /* warm espresso — text & dark sections */
+  --color-ink-2: #3c2a20;
+  --color-paper: #fff3ea;      /* soft peach background */
+  --color-paper-2: #fbe1d0;    /* warmer peach surface */
+  --color-copper: #e0613c;     /* coral — primary accent */
+  --color-copper-bright: #f47a4e;
+  --color-violet: #c1557b;     /* warm berry — secondary accent */
+  --color-teal: #d39440;       /* honey — tertiary accent */
+  --color-graphite: #8a6f60;   /* warm taupe — muted text */
+  --color-graphite-2: #a98e7e;
+
+  --font-display: "IBM Plex Sans", system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+:root { color-scheme: light; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+}
+
+/* ── Lenis smooth scroll ────────────────────────────────────────────── */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ── Progressive reveal (only hide when JS is present) ──────────────── */
+.js .reveal { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+/* Hero entrance — text materializes in after the photo */
+.js .hero-in { opacity: 0; will-change: opacity, transform, filter; }
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-in { opacity: 1; }
+}
+
+/* ── Pipeline: collapse the scroll-driven track when motion is reduced ─ */
+@media (prefers-reduced-motion: reduce) {
+  .pipeline-track { height: auto !important; }
+  .pipeline-sticky { position: static !important; }
+}
+
+::selection { background: color-mix(in srgb, var(--color-copper) 32%, transparent); }
+
+/* Focus ring — part of the quality floor */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-violet);
+  outline-offset: 3px;
+  border-radius: 2px;
+}

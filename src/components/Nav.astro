@@ -1,0 +1,62 @@
+---
+import { profile } from "../data/site";
+
+const links = [
+  { href: "#beyond", label: "life" },
+  { href: "#about", label: "about" },
+  { href: "#work", label: "work" },
+  { href: "#contact", label: "contact" },
+];
+---
+
+<div
+  id="scroll-bar"
+  class="fixed left-0 right-0 top-0 z-50 h-[2px] origin-left bg-copper"
+  style="transform: scaleX(0)"
+>
+</div>
+
+<header id="nav" class="nav fixed left-0 right-0 top-0 z-40 transition-colors duration-300">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="#top" class="flex items-center gap-2.5 text-[15px] font-medium">
+      <span class="inline-block h-3 w-3 rounded-full bg-copper"></span>
+      justin chen
+    </a>
+    <div class="flex items-center gap-5">
+      <div class="hidden gap-6 text-[14px] sm:flex">
+        {
+          links.map((l) => (
+            <a href={l.href} class="opacity-70 transition-opacity hover:opacity-100">
+              {l.label}
+            </a>
+          ))
+        }
+      </div>
+      <a
+        href={profile.resume}
+        class="nav-resume inline-flex items-center rounded-full px-4 py-1.5 text-[14px] transition-colors"
+        >résumé</a
+      >
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    color: var(--color-paper);
+  }
+  .nav-resume {
+    border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  }
+  .nav-scrolled {
+    color: var(--color-ink);
+    background: color-mix(in srgb, var(--color-paper) 85%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  }
+  .nav-resume:hover {
+    background: var(--color-copper);
+    border-color: var(--color-copper);
+    color: var(--color-paper);
+  }
+</style>

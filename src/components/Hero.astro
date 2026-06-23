@@ -1,0 +1,78 @@
+---
+import { profile } from "../data/site";
+---
+
+<section id="hero" class="relative flex min-h-screen items-center overflow-hidden text-paper">
+  <!-- landscape photo background -->
+  <img
+    src={profile.heroBg}
+    alt=""
+    aria-hidden="true"
+    class="hero-bg absolute inset-0 h-full w-full object-cover"
+  />
+  <!-- scrims for text legibility over any photo -->
+  <div class="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/20"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink/75 to-transparent"></div>
+
+  <div class="relative z-10 mx-auto w-full max-w-6xl px-6">
+    <div class="max-w-2xl">
+      <p class="hero-in mb-5 flex items-center gap-3 font-mono text-[13px] tracking-wide text-paper/80">
+        <span class="inline-block h-px w-8 bg-copper"></span>
+        software engineer · purdue
+      </p>
+      <h1 class="hero-in text-[clamp(2.4rem,6vw,4rem)] font-semibold leading-[1.05] tracking-tight">
+        Hi, I'm Justin Chen.
+      </h1>
+      <p class="hero-in mt-4 text-[clamp(1.05rem,2vw,1.45rem)] font-medium text-paper/90">
+        I build software people <span class="text-copper-bright">actually enjoy</span> using.
+      </p>
+      <p class="hero-in mt-5 max-w-lg text-[16px] leading-relaxed text-paper/75">
+        {profile.heroLine}
+      </p>
+      <div class="hero-in mt-9 flex flex-wrap items-center gap-3 text-[14px]">
+        <a
+          href="#work"
+          class="inline-flex items-center gap-2 rounded-full bg-copper px-5 py-2.5 font-medium text-paper transition-colors hover:bg-copper-bright"
+          >View my work →</a
+        >
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-2 rounded-full border border-paper/40 px-5 py-2.5 text-paper transition-colors hover:bg-paper/10"
+          >Get in touch</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <a
+    href="#beyond"
+    class="hero-in absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-[12px] text-paper/70 transition-colors hover:text-paper md:block"
+    >↓ get to know me</a
+  >
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const items = gsap.utils.toArray<HTMLElement>(".hero-in");
+  const bg = document.querySelector<HTMLElement>(".hero-bg");
+
+  if (!reduce) {
+    // photo settles first…
+    if (bg) gsap.fromTo(bg, { scale: 1.08 }, { scale: 1, duration: 1.8, ease: "power2.out" });
+    // …then the text materializes in
+    if (items.length) {
+      gsap.set(items, { y: 26, filter: "blur(12px)" });
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1,
+        ease: "power3.out",
+        stagger: 0.13,
+        delay: 1.5,
+      });
+    }
+  }
+</script>

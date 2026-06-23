@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f3a86a"/>
+    <stop offset="0.55" stop-color="#d8633f"/>
+    <stop offset="1" stop-color="#3a2418"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#s)"/>
+  <circle cx="1150" cy="300" r="120" fill="#ffffff" opacity="0.45"/>
+  <path d="M0 620 Q400 520 800 600 T1600 560 V900 H0 Z" fill="#2b1c14" opacity="0.26"/>
+  <path d="M0 700 Q450 600 900 680 T1600 660 V900 H0 Z" fill="#2b1c14" opacity="0.4"/>
+  <text x="800" y="468" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="46" font-weight="600" opacity="0.92">your landscape photo</text>
+  <text x="800" y="520" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="22" opacity="0.7">drop public/hero.jpg and set heroBg</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Portrait placeholder">
+  <rect width="800" height="1000" fill="#fbe1d0" />
+  <rect x="18" y="18" width="764" height="964" rx="10" fill="none" stroke="#e0613c" stroke-opacity="0.4" stroke-width="1.5" />
+  <g fill="#e7c3aa">
+    <circle cx="400" cy="372" r="118" />
+    <ellipse cx="400" cy="760" rx="196" ry="168" />
+  </g>
+  <g fill="none" stroke="#cf7a4a" stroke-opacity="0.7" stroke-width="2">
+    <circle cx="400" cy="372" r="118" />
+    <path d="M214 800 C214 612 318 560 400 560 C482 560 586 612 586 800" />
+  </g>
+  <text x="400" y="905" text-anchor="middle" fill="#c2552c" font-family="monospace" font-size="30" letter-spacing="3">your photo</text>
+  <text x="400" y="940" text-anchor="middle" fill="#a98e7e" font-family="monospace" font-size="16" letter-spacing="1">replace public/me.svg with me.jpg</text>
+</svg>

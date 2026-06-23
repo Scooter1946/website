@@ -1,0 +1,72 @@
+---
+import { stats } from "../data/site";
+---
+
+<section class="bg-paper-2/60 py-14">
+  <div class="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-6 md:grid-cols-4">
+    {
+      stats.map((s) => (
+        <div class="reveal">
+          {s.static ? (
+            <div class="text-[clamp(2.5rem,5vw,3.4rem)] font-semibold leading-none text-copper">
+              {s.static}
+            </div>
+          ) : (
+            <div
+              class="stat-num text-[clamp(2.5rem,5vw,3.4rem)] font-semibold leading-none text-copper"
+              data-num={s.num}
+              data-dec={s.decimals ?? 0}
+              data-suffix={s.suffix}
+            >
+              {s.decimals ? s.num.toFixed(s.decimals) : s.num.toLocaleString()}
+              {s.suffix}
+            </div>
+          )}
+          <p class="mt-3 text-[13px] leading-snug text-ink/65 md:pr-6">{s.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fmt = (v: number, dec: number) =>
+    dec ? v.toFixed(dec) : Math.round(v).toLocaleString();
+
+  document.querySelectorAll<HTMLElement>(".stat-num").forEach((el) => {
+    const target = parseFloat(el.dataset.num || "0");
+    const dec = parseInt(el.dataset.dec || "0");
+    const suf = el.dataset.suffix || "";
+    const render = (v: number) => (el.textContent = fmt(v, dec) + suf);
+    if (reduce) {
+      render(target);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          const dur = 1300;
+          let start: number | null = null;
+          const safety = setTimeout(() => render(target), dur + 500);
+          const tick = (t: number) => {
+            if (start === null) start = t;
+            const p = Math.min(1, (t - start) / dur);
+            render(target * p);
+            if (p < 1) requestAnimationFrame(tick);
+            else {
+              clearTimeout(safety);
+              render(target);
+            }
+          };
+          render(0);
+          requestAnimationFrame(tick);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+  });
+</script>

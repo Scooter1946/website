@@ -1,0 +1,99 @@
+---
+import "../styles/global.css";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/500.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-sans/600.css";
+import Nav from "../components/Nav.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Justin Chen — software & silicon",
+  description = "Computer engineer at Purdue working across hardware and software. Selected work, experience, and a scroll-driven RISC-V pipeline.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0f0c1d" />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+
+    <script>
+      import Lenis from "lenis";
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+      gsap.registerPlugin(ScrollTrigger);
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!reduce) {
+        const lenis = new Lenis({ lerp: 0.1, anchors: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        // Quiet reveals — one coherent motion system; the rest of the page stays still.
+        gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 18 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: { trigger: el, start: "top 88%" },
+            },
+          );
+        });
+      }
+
+      // Nav: light over the hero, paper-backed once scrolled past it.
+      const nav = document.getElementById("nav");
+      const hero = document.getElementById("hero");
+      if (nav && hero) {
+        new IntersectionObserver(
+          ([e]) => nav.classList.toggle("nav-scrolled", !e.isIntersecting),
+          { rootMargin: "-64px 0px 0px 0px", threshold: 0 },
+        ).observe(hero);
+      }
+
+      // PC register readout + top progress bar (functional scroll progress).
+      const pc = document.getElementById("pc-addr");
+      const bar = document.getElementById("scroll-bar");
+      const onScroll = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const p = max > 0 ? h.scrollTop / max : 0;
+        if (bar) bar.style.transform = `scaleX(${p})`;
+        if (pc)
+          pc.textContent =
+            "0x" + Math.round(p * 0xfff).toString(16).padStart(3, "0").toUpperCase();
+      };
+      document.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    </script>
+  </body>
+</html>
