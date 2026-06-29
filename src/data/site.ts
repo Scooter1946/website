@@ -2,8 +2,8 @@
 
 export const profile = {
   name: "Justin Chen",
-  role: "Software engineer",
-  tagline: "I build software people actually enjoy using.",
+  role: "Electrical & software engineer",
+  tagline: "I build whatever pulls me in, from code to circuits.",
   heroLine: "Electrical engineering and computer science at Purdue, by way of competitive programming.",
   photo: "/me.svg", // portrait (currently unused — hero uses heroBg below)
   heroBg: "/hero.svg", // landscape hero background — drop public/hero.jpg and point this at it
@@ -21,13 +21,12 @@ export const profile = {
 
 // Headline metrics for the stats band (animated count-up).
 export const stats: any[] = [
-  { num: 20, suffix: "×", label: "faster order processing at Vivalink" },
+  { static: "Top 2%", label: "on LeetCode (global)" },
   { num: 1600, suffix: "+", label: "Codeforces rating — Expert" },
   { static: "#1", label: "DECA stock-market game · 2,000+ entrants, Western Region" },
-  { num: 95, suffix: "%", label: "accuracy on an on-device ML model" },
 ];
 
-export const accolades = ["LeetCode top 2%", "AIME qualifier", "DECA ICDC qualifier", "3.8 GPA"];
+export const accolades = ["LeetCode top 2%", "AIME qualifier", "DECA ICDC qualifier"];
 
 export const experience = [
   {
@@ -78,14 +77,15 @@ export const experience = [
       "Led 10+ engineers on real-time robot software in Java and built React/Firebase scouting tools — part of a top-3 regional finish.",
     stack: ["Java", "React", "Firebase"],
   },
-  {
-    role: "B.S./M.S. Electrical Engineering · CS & Math minors",
-    org: "Purdue University",
-    period: "Expected 2028",
-    blurb: "3.8 GPA.",
-    stack: [],
-  },
 ];
+
+export const education = {
+  school: "Purdue University",
+  degree: "B.S./M.S. Electrical Engineering",
+  minors: "CS & Math minors",
+  period: "Expected 2028",
+  gpa: "3.8 GPA",
+};
 
 export const projects = [
   {
