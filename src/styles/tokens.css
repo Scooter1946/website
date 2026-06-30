@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+
+  /* Color — warm "peach" scheme. Single warm copper accent; always light (no dark variant). */
+  --bg: #FFF3EA;
+  --surface: #FFFCF8;
+  --text-primary: #2B1C14;
+  --text-secondary: #6E5849;
+  --text-tertiary: #9A8270;
+  --border: rgba(43, 28, 20, 0.12);
+  --border-strong: rgba(43, 28, 20, 0.20);
+  --accent: #C2502B;        /* one warm copper accent; never add a second */
+  --accent-soft: #FFF3EA;
+  --focus: #C2502B;
+
+  /* Type families — TODO(user): swap for licensed/self-hosted fonts if desired */
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Fluid type scale (handles mobile→desktop without media queries) */
+  --fs-display: clamp(2rem, 1.3rem + 3.2vw, 3rem);
+  --fs-h1: clamp(1.5rem, 1.2rem + 1.4vw, 1.875rem);
+  --fs-h2: clamp(1.25rem, 1.1rem + 0.6vw, 1.375rem);
+  --fs-lead: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+  --fs-body: 1rem;
+  --fs-caption: 0.8125rem;
+  --fs-mono: 0.75rem;
+
+  /* Spacing (4px base) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px; --sp-16: 64px; --sp-24: 96px;
+
+  /* Radius & borders */
+  --radius: 8px;
+  --radius-card: 12px;
+  --hairline: 0.5px;
+
+  /* Motion */
+  --dur-micro: 120ms;
+  --dur-hover: 180ms;
+  --dur-enter: 500ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* No dark variant by design — the warm peach scheme is always light. */

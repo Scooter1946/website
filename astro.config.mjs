@@ -1,13 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import tailwindcss from '@tailwindcss/vite';
 
-// Astro + React island + Tailwind v4 (via the Vite plugin).
+// Static output. No UI framework, no Tailwind — plain CSS + one enhancement script.
 export default defineConfig({
-  site: 'https://justinchen.dev',
-  integrations: [react()],
-  vite: {
-    plugins: [tailwindcss()],
-  },
+  site: 'https://example.com', // TODO(user): your real domain
+  // For a GitHub Pages *project* site, also set:
+  // base: '/REPO_NAME', // TODO(user): uncomment + set if deploying to a GH Pages project site
 });

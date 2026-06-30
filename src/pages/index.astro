@@ -1,23 +1,146 @@
 ---
-import Base from "../layouts/Base.astro";
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/components.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/jetbrains-mono/400.css";
+
+import { site } from "../data/site";
+import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import Stats from "../components/Stats.astro";
-import About from "../components/About.astro";
-import Experience from "../components/Experience.astro";
-import Projects from "../components/Projects.astro";
-import Skills from "../components/Skills.astro";
-import Beyond from "../components/Beyond.astro";
-import Contact from "../components/Contact.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Footer from "../components/Footer.astro";
 ---
 
-<Base>
-  <span id="top"></span>
-  <Hero />
-  <Beyond />
-  <Stats />
-  <About />
-  <Experience />
-  <Projects />
-  <Skills />
-  <Contact />
-</Base>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{site.name} — software & silicon</title>
+    <meta
+      name="description"
+      content="Electrical engineering and computer science at Purdue, working across hardware and software."
+    />
+    <meta property="og:title" content={`${site.name} — software & silicon`} />
+    <meta
+      property="og:description"
+      content="Electrical engineering and computer science at Purdue, working across hardware and software."
+    />
+    <meta property="og:type" content="website" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <Hero />
+
+      <section id="work" class="section" data-reveal>
+        <p class="eyebrow">selected work</p>
+        <h2 class="section__title">Selected work</h2>
+        <div class="work-grid">
+          {site.projects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </section>
+
+      <section id="about" class="section" data-reveal>
+        <p class="eyebrow">about</p>
+        <h2 class="section__title">About</h2>
+        <p class="about__body">{site.about}</p>
+      </section>
+
+      <section id="skills" class="section" data-reveal>
+        <p class="eyebrow">skills</p>
+        <h2 class="section__title">Skills</h2>
+        <dl class="skills">
+          {
+            site.skills.map((group) => (
+              <div class="skills__group">
+                <dt>{group.group}</dt>
+                <dd>
+                  <ul class="skills__items">
+                    {group.items.map((item) => (
+                      <li class="tag">{item}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+    </main>
+
+    <Footer />
+
+    <script>
+      import "../scripts/enhance.ts";
+    </script>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        padding: var(--sp-2) var(--sp-4);
+        background: var(--surface);
+        border: var(--hairline) solid var(--border-strong);
+        border-radius: var(--radius);
+        z-index: 20;
+      }
+      .skip-link:focus {
+        left: var(--sp-4);
+        top: var(--sp-4);
+      }
+      .section {
+        max-width: 56rem;
+        margin-inline: auto;
+        padding: var(--sp-16) var(--sp-6);
+      }
+      .section__title {
+        font-size: var(--fs-h1);
+        margin-top: var(--sp-2);
+      }
+      .about__body {
+        font-size: var(--fs-lead);
+        color: var(--text-secondary);
+        max-width: 44rem;
+        margin-top: var(--sp-4);
+      }
+      .skills {
+        display: grid;
+        gap: var(--sp-6);
+        margin-top: var(--sp-6);
+      }
+      .skills__group {
+        display: grid;
+        grid-template-columns: 9rem 1fr;
+        gap: var(--sp-4);
+        align-items: start;
+      }
+      .skills__group dt {
+        color: var(--text-secondary);
+        font-size: var(--fs-caption);
+      }
+      .skills__group dd {
+        margin: 0;
+      }
+      .skills__items {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--sp-2);
+        padding: 0;
+      }
+      @media (max-width: 36rem) {
+        .skills__group {
+          grid-template-columns: 1fr;
+          gap: var(--sp-2);
+        }
+      }
+    </style>
+  </body>
+</html>

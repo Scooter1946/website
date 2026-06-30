@@ -1,62 +1,55 @@
 ---
-import { profile } from "../data/site";
-
-const links = [
-  { href: "#beyond", label: "life" },
-  { href: "#about", label: "about" },
-  { href: "#work", label: "work" },
-  { href: "#contact", label: "contact" },
-];
+import { site } from "../data/site";
 ---
 
-<div
-  id="scroll-bar"
-  class="fixed left-0 right-0 top-0 z-50 h-[2px] origin-left bg-copper"
-  style="transform: scaleX(0)"
->
-</div>
-
-<header id="nav" class="nav fixed left-0 right-0 top-0 z-40 transition-colors duration-300">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href="#top" class="flex items-center gap-2.5 text-[15px] font-medium">
-      <span class="inline-block h-3 w-3 rounded-full bg-copper"></span>
-      justin chen
-    </a>
-    <div class="flex items-center gap-5">
-      <div class="hidden gap-6 text-[14px] sm:flex">
-        {
-          links.map((l) => (
-            <a href={l.href} class="opacity-70 transition-opacity hover:opacity-100">
-              {l.label}
-            </a>
-          ))
-        }
-      </div>
-      <a
-        href={profile.resume}
-        class="nav-resume inline-flex items-center rounded-full px-4 py-1.5 text-[14px] transition-colors"
-        >résumé</a
-      >
-    </div>
-  </nav>
-</header>
+<nav class="nav" aria-label="Primary">
+  <div class="nav__inner">
+    <a class="nav__name" href="#top">{site.name}</a>
+    <ul class="nav__links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
 <style>
   .nav {
-    color: var(--color-paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: var(--hairline) solid var(--border);
   }
-  .nav-resume {
-    border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  .nav__inner {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: var(--sp-3) var(--sp-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
   }
-  .nav-scrolled {
-    color: var(--color-ink);
-    background: color-mix(in srgb, var(--color-paper) 85%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  .nav__name {
+    color: var(--text-primary);
+    font-weight: 500;
   }
-  .nav-resume:hover {
-    background: var(--color-copper);
-    border-color: var(--color-copper);
-    color: var(--color-paper);
+  .nav__name:hover {
+    text-decoration: none;
+  }
+  .nav__links {
+    list-style: none;
+    display: flex;
+    gap: var(--sp-4);
+    padding: 0;
+  }
+  .nav__links a {
+    color: var(--text-secondary);
+    font-size: var(--fs-caption);
+  }
+  .nav__links a:hover {
+    color: var(--text-primary);
   }
 </style>

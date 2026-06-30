@@ -1,0 +1,48 @@
+/* Status pill */
+.status { display: flex; align-items: center; gap: var(--sp-2); }
+.status__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* Buttons */
+.btn {
+  font-family: var(--font-body); font-size: var(--fs-caption);
+  border-radius: var(--radius); padding: var(--sp-2) var(--sp-4);
+  border: var(--hairline) solid var(--border-strong);
+  background: transparent; color: var(--text-primary); cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-standard), transform var(--dur-micro);
+}
+.btn:hover { background: var(--surface); }
+.btn:active { transform: scale(0.98); }
+.btn--primary { background: var(--accent); color: var(--accent-soft); border-color: var(--accent); }
+
+/* Project card */
+.card {
+  position: relative; overflow: hidden;
+  background: var(--surface); border: var(--hairline) solid var(--border);
+  border-radius: var(--radius-card); padding: var(--sp-4) var(--sp-4);
+  cursor: pointer; text-decoration: none; color: inherit;
+  transition: transform var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard);
+}
+.card:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+.card__bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform var(--dur-hover) var(--ease-standard);
+}
+.card:hover .card__bar { transform: scaleY(1); }
+.card__arrow { transition: transform var(--dur-hover) var(--ease-standard); }
+.card:hover .card__arrow { transform: translateX(4px); }
+
+/* Mono tag pill + eyebrow label */
+.tag {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  color: var(--text-secondary); background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  border-radius: var(--radius); padding: 2px var(--sp-2);
+}
+.eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: 0.5px; color: var(--text-tertiary); }
+
+/* Kinetic headline word */
+.kinetic { color: var(--text-primary); border-bottom: 2px solid var(--accent); padding-bottom: 1px; }
+
+/* Project grid */
+.work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: var(--sp-3); }

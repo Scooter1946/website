@@ -1,0 +1,15 @@
+---
+import { site } from "../data/site";
+---
+
+<span class="status">
+  <span class="status__dot" data-pulse aria-hidden="true"></span>
+  <span class="status__label">{site.available}</span>
+</span>
+
+<style>
+  .status__label {
+    font-size: var(--fs-caption);
+    color: var(--text-secondary);
+  }
+</style>
