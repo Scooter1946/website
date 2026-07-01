@@ -9,12 +9,19 @@ export const site = {
   name: "Justin Chen",
   // Status pill text (paired with the pulsing availability dot). Role-agnostic by request.
   available: "Building things at Purdue",
+  location: "West Lafayette, IN",
+  education: "B.S./M.S. Electrical Engineering, Purdue",
   specializations: [
     // the kinetic headline cycles through these
     "firmware",
     "silicon",
     "web",
     "ML",
+  ],
+  stats: [
+    { value: "Top 2%", label: "LeetCode, global" },
+    { value: "1600+", label: "Codeforces — Expert" },
+    { value: "#1", label: "DECA stock-market game · 2,000+ entrants" },
   ],
   email: "tulare789@gmail.com",
   links: [

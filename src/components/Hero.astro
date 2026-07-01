@@ -5,29 +5,61 @@ import StatusPill from "./StatusPill.astro";
 const words = JSON.stringify(site.specializations);
 ---
 
-<header class="hero" id="top">
-  <p class="eyebrow" data-rise="0">software &amp; silicon</p>
-  <h1 class="hero__title" data-rise="1">{site.name}</h1>
-  <p class="hero__lead" data-rise="2">
-    Electrical engineering and computer science — currently focused on
-    <span class="kinetic-slot">
-      <span class="kinetic" data-kinetic data-words={words}>{site.specializations[0]}</span>
-    </span>
-  </p>
-  <div class="hero__status" data-rise="3">
-    <StatusPill />
-  </div>
-  <div class="hero__cta" data-rise="4">
-    <a class="btn btn--primary" href={`mailto:${site.email}`}>Get in touch</a>
-    <a class="btn" href={site.resume}>Résumé</a>
+<header class="band hero" id="top">
+  <div class="inner hero__grid">
+    <div class="hero__main">
+      <p class="eyebrow" data-rise="0">software &amp; silicon</p>
+      <h1 class="hero__title" data-rise="1">{site.name}</h1>
+      <p class="hero__lead" data-rise="2">
+        Electrical engineering and computer science — currently focused on
+        <span class="kinetic-slot"
+          ><span class="kinetic" data-kinetic data-words={words}>{site.specializations[0]}</span></span
+        >
+      </p>
+      <div class="hero__cta" data-rise="3">
+        <a class="btn btn--primary" href={`mailto:${site.email}`}>Get in touch</a>
+        <a class="btn" href={site.resume}>Résumé</a>
+      </div>
+    </div>
+
+    <aside class="hero__panel" data-rise="4">
+      <StatusPill />
+      <dl class="facts">
+        <div class="fact">
+          <dt>Based in</dt>
+          <dd>{site.location}</dd>
+        </div>
+        <div class="fact">
+          <dt>Studying</dt>
+          <dd>{site.education}</dd>
+        </div>
+        <div class="fact">
+          <dt>Focus</dt>
+          <dd>{site.specializations.join(" · ")}</dd>
+        </div>
+        <div class="fact">
+          <dt>Find me</dt>
+          <dd class="facts__links">
+            {site.links.map((l) => <a href={l.href}>{l.label}</a>)}
+          </dd>
+        </div>
+      </dl>
+    </aside>
   </div>
 </header>
 
 <style>
-  .hero {
-    max-width: 56rem;
-    margin-inline: auto;
-    padding: var(--sp-24) var(--sp-6) var(--sp-16);
+  .hero .inner {
+    padding-top: var(--sp-24);
+    padding-bottom: var(--sp-16);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--sp-12);
+    align-items: start;
+  }
+  .hero__main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -39,7 +71,7 @@ const words = JSON.stringify(site.specializations);
   .hero__lead {
     font-size: var(--fs-lead);
     color: var(--text-secondary);
-    max-width: 40rem;
+    max-width: 36rem;
   }
   /* Reserve width so the cycling word never shifts layout (CLS ~ 0). */
   .kinetic-slot {
@@ -51,5 +83,47 @@ const words = JSON.stringify(site.specializations);
     flex-wrap: wrap;
     gap: var(--sp-3);
     margin-top: var(--sp-2);
+  }
+  .hero__panel {
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+  .facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+  .fact dt {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+  }
+  .fact dd {
+    margin: 0;
+    font-size: var(--fs-caption);
+    color: var(--text-primary);
+  }
+  .facts__links {
+    display: flex;
+    gap: var(--sp-3);
+  }
+  .facts__links a {
+    color: var(--accent);
+  }
+  @media (max-width: 48rem) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--sp-8);
+    }
+    .hero .inner {
+      padding-top: var(--sp-16);
+    }
   }
 </style>
