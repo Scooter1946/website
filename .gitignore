@@ -24,3 +24,9 @@ pnpm-debug.log*
 /Morgan_Stanley_SWE.pdf
 /SWE_all_experiences.pdf
 /public/resume.pdf
+
+# Claude Code local settings (machine-specific permissions)
+.claude/settings.local.json
+
+# CAD reference files (macropad STLs) — used as design reference, not the build
+*.stl

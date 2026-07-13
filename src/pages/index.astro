@@ -58,9 +58,23 @@ import Footer from "../components/Footer.astro";
         <div class="inner">
           <p class="eyebrow">selected work</p>
           <h2 class="section__title">Selected work</h2>
-          <div class="work-grid">
-            {site.projects.map((project) => <ProjectCard project={project} />)}
-          </div>
+        </div>
+        <!-- Auto-scrolling marquee (owner-approved spec exception — see CLAUDE.md).
+             The set is rendered twice so translateX(-50%) loops seamlessly; the
+             second copy is hidden from assistive tech + keyboard. -->
+        <div class="marquee" data-marquee>
+          <ul class="marquee__track">
+            {site.projects.map((project) => (
+              <li class="marquee__item">
+                <ProjectCard project={project} />
+              </li>
+            ))}
+            {site.projects.map((project) => (
+              <li class="marquee__item" aria-hidden="true">
+                <ProjectCard project={project} clone />
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

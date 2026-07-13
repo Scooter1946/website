@@ -33,6 +33,9 @@ IMPORTANT: Before writing any code, read `personal-website-build-checklist.md` a
 - Honor `prefers-reduced-motion: reduce`: disable all transitions, stagger, headline cycle, and dot pulse; render the final static state.
 - Two font weights only (400, 500). Sentence case everywhere except the mono eyebrow label.
 
+## Exceptions (owner-approved)
+- **Selected-work marquee**: an always-on left→right auto-scroll in the "Selected work" section. This is a THIRD self-running animation and runs longer than 500ms — both against the animation non-negotiables — added at the owner's explicit request. Constraints kept: `transform`-only, pauses on hover/focus, and freezes to a static (manually scrollable) row under `prefers-reduced-motion`.
+
 ## Placeholders — handle, do not invent
 `src/data/site.ts` ships with clearly labeled `TODO(user)` values so the site builds and runs on defaults.
 - Build on the defaults; the site MUST run end to end without real content.

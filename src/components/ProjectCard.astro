@@ -1,10 +1,17 @@
 ---
 import type { Project } from "../data/site";
 
-const { project } = Astro.props as { project: Project };
+const { project, clone = false } = Astro.props as { project: Project; clone?: boolean };
 ---
 
-<a class="card" href={project.href}>
+<a
+  class="card"
+  href={project.href}
+  data-tilt
+  data-spotlight
+  aria-hidden={clone ? "true" : undefined}
+  tabindex={clone ? -1 : undefined}
+>
   <span class="card__bar" aria-hidden="true"></span>
   <div class="card__head">
     <h3 class="card__title">{project.title}</h3>

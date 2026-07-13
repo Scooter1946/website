@@ -20,11 +20,7 @@ const words = JSON.stringify(site.specializations);
         <a class="btn btn--primary" href={`mailto:${site.email}`}>Get in touch</a>
         <a class="btn" href={site.resume}>Résumé</a>
       </div>
-    </div>
-
-    <aside class="hero__panel" data-rise="4">
-      <StatusPill />
-      <dl class="facts">
+      <dl class="facts" data-rise="4">
         <div class="fact">
           <dt>Based in</dt>
           <dd>{site.location}</dd>
@@ -44,13 +40,57 @@ const words = JSON.stringify(site.specializations);
           </dd>
         </div>
       </dl>
+    </div>
+
+    <aside class="hero__panel" data-rise="5">
+      <StatusPill />
+      <div class="pad" data-spotlight data-tilt="16">
+        <div class="pad__shadow" aria-hidden="true"></div>
+        <div class="pad__stage">
+          <div class="pad__face pad__face--bottom" aria-hidden="true"></div>
+          <div class="pad__face pad__face--back" aria-hidden="true"></div>
+          <div class="pad__face pad__face--left" aria-hidden="true"></div>
+          <div class="pad__face pad__face--right" aria-hidden="true"></div>
+          <div class="pad__face pad__face--front" aria-hidden="true">
+            <span class="port"></span>
+          </div>
+          <div class="pad__face pad__face--top">
+            <div class="hinge" aria-hidden="true">
+              <span class="hinge__knuckle"></span>
+              <span class="hinge__knuckle"></span>
+              <span class="hinge__knuckle"></span>
+            </div>
+            <div
+              class="pad__keys"
+              role="group"
+              aria-label="Macropad — a nod to the keypad I built. Press a key."
+            >
+              {
+                Array.from({ length: 30 }).map((_, i) => (
+                  <button type="button" class="key" data-key aria-label={`Key ${i + 1}`}>
+                    <span class="key__wall key__wall--front" aria-hidden="true" />
+                    <span class="key__wall key__wall--left" aria-hidden="true" />
+                    <span class="key__wall key__wall--right" aria-hidden="true" />
+                  </button>
+                ))
+              }
+            </div>
+            <span class="screw screw--tl" aria-hidden="true"></span>
+            <span class="screw screw--tr" aria-hidden="true"></span>
+            <span class="screw screw--bl" aria-hidden="true"></span>
+            <span class="screw screw--br" aria-hidden="true"></span>
+            <span class="pad__label" aria-hidden="true">macropad</span>
+            <div class="pad__glow" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
     </aside>
   </div>
 </header>
 
 <style>
   .hero .inner {
-    padding-top: var(--sp-24);
+    padding-top: var(--sp-16);
     padding-bottom: var(--sp-16);
   }
   .hero__grid {
@@ -84,20 +124,29 @@ const words = JSON.stringify(site.specializations);
     gap: var(--sp-3);
     margin-top: var(--sp-2);
   }
+  /* Warm "clay" pedestal — a deeper peach than the cream surface so the light
+     macropad separates and the right side carries weight, while staying on the
+     warm/light theme. One accent only (tinted into the surface). */
   .hero__panel {
-    border: var(--hairline) solid var(--border);
+    border: var(--hairline) solid color-mix(in srgb, var(--accent) 30%, var(--border-strong));
     border-radius: var(--radius-card);
-    background: var(--surface);
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--accent) 18%, var(--surface)),
+      color-mix(in srgb, var(--accent) 30%, var(--surface))
+    );
     padding: var(--sp-6);
     display: flex;
     flex-direction: column;
     gap: var(--sp-4);
   }
   .facts {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-3);
-    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--sp-4) var(--sp-8);
+    width: 100%;
+    max-width: 32rem;
+    margin: var(--sp-4) 0 0;
   }
   .fact dt {
     font-family: var(--font-mono);
