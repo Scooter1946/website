@@ -112,9 +112,9 @@ const words = JSON.stringify(site.specializations);
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: clamp(var(--sp-6), 3vw, var(--sp-12));
-    padding-top: clamp(var(--sp-16), 9vw, var(--sp-24));
-    padding-bottom: clamp(var(--sp-12), 6vw, var(--sp-20));
+    gap: clamp(var(--sp-4), 2vw, var(--sp-8));
+    padding-top: clamp(var(--sp-10), 5vw, var(--sp-16));
+    padding-bottom: clamp(var(--sp-8), 3.5vw, var(--sp-12));
   }
   .hero__top {
     display: flex;
@@ -144,7 +144,7 @@ const words = JSON.stringify(site.specializations);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--sp-6);
+    gap: var(--sp-4);
   }
   .hero__lead {
     font-size: var(--fs-lead);
@@ -170,9 +170,9 @@ const words = JSON.stringify(site.specializations);
   .facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: var(--sp-6) var(--sp-8);
+    gap: var(--sp-4) var(--sp-8);
     margin: 0;
-    padding-top: clamp(var(--sp-6), 3vw, var(--sp-10));
+    padding-top: clamp(var(--sp-4), 2vw, var(--sp-6));
     border-top: var(--hairline) solid var(--border);
   }
   .fact dt {

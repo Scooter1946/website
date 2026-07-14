@@ -25,7 +25,7 @@ export interface Stat {
 export const site = {
   name: "Justin Chen",
   // Status pill text (paired with the pulsing availability dot).
-  available: "Building things at Purdue",
+  available: "Building at Purdue",
   location: "West Lafayette, IN",
   education: "B.S. + M.S. Electrical Engineering, Purdue · Math + CS minor",
   gradYear: "B.S. expected May 2028",
