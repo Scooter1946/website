@@ -1,5 +1,7 @@
 # Build plan — personal portfolio (Approach A)
 
+> ⚠️ SUPERSEDED (historical). This runbook built the original minimalist "quiet base" site. The site has since been redesigned to the "kinetic editorial, warm" direction — see `CLAUDE.md` and `approach-a-design-spec.md` for the current source of truth. Some rules below (one accent, no motion > 500ms, two font weights, two self-running animations) are intentionally retired. Kept only as a record of the original scaffold + phase structure.
+
 An ordered runbook for an AI coding agent. Work phase by phase; after each phase, run its "Done when" checks before moving on. All design values come from `approach-a-design-spec.md` (the source of truth) — read it in full before Phase 1. Do not improvise tokens, colors, sizes, or timings.
 
 Stack (decided — do not change without being asked): Astro (static output), TypeScript, plain CSS. No UI framework, no Tailwind. Client JS is a single progressive-enhancement script. Package manager: npm. Node 20+.

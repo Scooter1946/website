@@ -1,39 +1,96 @@
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  font-weight: 400;
+  font-weight: var(--fw-normal);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* clip (not hidden) keeps parallax/aurora overflow off-screen without
+     turning the body into a scroll container — sticky nav keeps working. */
+  overflow-x: clip;
 }
-h1, h2, h3 {
+
+h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: var(--fw-medium);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-optical-sizing: auto;
+  text-wrap: balance;
 }
+
+p { text-wrap: pretty; }
+
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 img { max-width: 100%; display: block; }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
 
-/* Entrance state applies ONLY when JS is present, so the site is fully
-   readable with JS disabled. The <head> inline script adds `.js`. */
-.js [data-rise], .js [data-reveal] { opacity: 0; transform: translateY(10px); }
-[data-rise].is-in, [data-reveal].is-in {
-  opacity: 1; transform: none;
-  transition: opacity var(--dur-enter) var(--ease-out),
-              transform var(--dur-enter) var(--ease-out);
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
-/* Reduced motion: neutralize all motion, render final state */
+::selection { background: var(--accent); color: var(--on-accent); }
+
+/* ---------------------------------------------------------------------- *
+ * Entrance / reveal system. Hidden state applies ONLY when JS is present
+ * (the <head> inline script adds `.js`), so the site is fully readable
+ * with JS disabled.
+ * ---------------------------------------------------------------------- */
+
+/* Reveal — every marked element unveils individually as it scrolls into
+   view (the script adds .is-in per element), so content keeps arriving as
+   you move down the page. The hero uses the same look via data-rise, fired
+   on load. Optional style="--i:N" cascades items that share a row. */
+.js [data-rise],
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.js [data-reveal="left"]  { transform: translateX(-36px); }
+.js [data-reveal="right"] { transform: translateX(36px); }
+.js [data-reveal="scale"] { transform: translateY(28px) scale(0.96); }
+
+[data-rise].is-in,
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur-enter) var(--ease-out),
+    transform var(--dur-enter) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* ---------------------------------------------------------------------- *
+ * Reduced motion: neutralize every animation/transition, disable smooth
+ * scroll, and render the final resting state.
+ * ---------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
+  .js [data-rise],
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Utility */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }

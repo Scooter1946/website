@@ -1,0 +1,35 @@
+---
+import { site } from "../data/site";
+---
+
+<section id="experience" class="band">
+  <div class="inner">
+    <div class="section-head" data-reveal>
+      <div class="section-head__eyebrow">
+        <span class="section-head__index">01 / experience</span>
+        <span class="section-head__line" aria-hidden="true"></span>
+      </div>
+      <h2 class="section-head__title">Where I've <em>shipped</em>.</h2>
+    </div>
+
+    <div class="timeline">
+      {
+        site.experience.map((xp) => (
+          <article class="xp" data-reveal="left">
+            <div class="xp__head">
+              <h3 class="xp__company">{xp.company}</h3>
+              <span class="xp__period">{xp.period}</span>
+            </div>
+            <p class="xp__role">{xp.role}</p>
+            <p class="xp__summary">{xp.summary}</p>
+            <ul class="xp__tags">
+              {xp.tags.map((t) => (
+                <li class="tag">{t}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

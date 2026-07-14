@@ -1,4 +1,5 @@
 const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+const fine = window.matchMedia?.('(hover: hover) and (pointer: fine)').matches ?? false;
 
 // 1. Entrance stagger (hero) — elements carry data-rise="0|1|2..."
 const rises = Array.from(document.querySelectorAll<HTMLElement>('[data-rise]'));
@@ -7,7 +8,7 @@ if (reduce) {
 } else {
   rises
     .sort((a, b) => Number(a.dataset.rise) - Number(b.dataset.rise))
-    .forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 80 * i));
+    .forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 90 * i));
 }
 
 // 2. Signature moment: kinetic headline. Element: data-kinetic, data-words='["a","b"]'
@@ -17,28 +18,39 @@ if (k && !reduce) {
   let i = 0;
   const cycle = () => {
     i = (i + 1) % words.length;
-    k.style.transition = 'opacity .26s ease';
+    k.style.transition = 'opacity .26s ease, transform .26s ease';
     k.style.opacity = '0';
-    setTimeout(() => { k.textContent = words[i]; k.style.opacity = '1'; }, 260);
-    setTimeout(cycle, 2600);
+    k.style.transform = 'translateY(0.35em)';
+    setTimeout(() => {
+      k.textContent = words[i];
+      k.style.opacity = '1';
+      k.style.transform = 'translateY(0)';
+    }, 260);
+    setTimeout(cycle, 2800);
   };
-  setTimeout(cycle, 2600);
+  setTimeout(cycle, 2800);
 }
 
 // 3. Scroll reveal for below-the-fold sections (data-reveal)
 const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
 if (reveals.length && !reduce && 'IntersectionObserver' in window) {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.15 });
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+  );
   reveals.forEach((el) => io.observe(el));
 } else {
   reveals.forEach((el) => el.classList.add('is-in'));
 }
 
-// 4. Availability dot pulse (data-pulse) — the only other permitted ambient loop
+// 4. Availability dot pulse (data-pulse) — ambient loop
 const dot = document.querySelector<HTMLElement>('[data-pulse]');
 if (dot && !reduce) {
   setInterval(() => {
@@ -48,26 +60,21 @@ if (dot && !reduce) {
 }
 
 // 5. Pointer spotlight (--mx/--my) + subtle tilt (--rx/--ry) on interactive
-// surfaces. Pointer-driven, never self-running: no new loop is introduced.
-// Skipped for reduced-motion and for coarse/no-hover pointers, so touch and
-// keyboard users get the static base state the CSS already ships.
-const fine = window.matchMedia?.('(hover: hover) and (pointer: fine)').matches ?? false;
+// surfaces. Pointer-driven; skipped for reduced-motion and coarse pointers.
 if (fine && !reduce) {
   const MAX_TILT = 5; // default degrees; override per element via data-tilt="<deg>"
   const surfaces = document.querySelectorAll<HTMLElement>('[data-spotlight], [data-tilt]');
   surfaces.forEach((el) => {
     const tilt = el.hasAttribute('data-tilt');
     const maxTilt = Number(el.dataset.tilt) || MAX_TILT;
-    // Coalesce pointer moves to one update per frame — avoids stutter from
-    // many events (and repeated style writes) landing within a single frame.
     let frame = 0;
     let cx = 0;
     let cy = 0;
     const update = () => {
       frame = 0;
       const r = el.getBoundingClientRect();
-      const px = (cx - r.left) / r.width; // 0..1
-      const py = (cy - r.top) / r.height; // 0..1
+      const px = (cx - r.left) / r.width;
+      const py = (cy - r.top) / r.height;
       el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
       el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
       if (tilt) {
@@ -82,7 +89,10 @@ if (fine && !reduce) {
     });
     if (tilt) {
       el.addEventListener('pointerleave', () => {
-        if (frame) { cancelAnimationFrame(frame); frame = 0; }
+        if (frame) {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
         el.style.setProperty('--rx', '0deg');
         el.style.setProperty('--ry', '0deg');
       });
@@ -90,15 +100,15 @@ if (fine && !reduce) {
   });
 }
 
-// 6. Macropad — the hero keypad is a nod to a physical build. Each key is a
-// real button: click / Enter / Space presses it and plays a short synthesized
-// clack. Roving tabindex + arrow keys keep it to one clean tab stop. All
-// user-initiated (no self-running loop); the keypad is fully keyboard-operable
-// and renders statically with no JS.
+// 6. Macropad — each key is a real button: click / Enter / Space presses it
+// and plays a short synthesized clack. Roving tabindex + arrow keys keep it to
+// one tab stop. Fully keyboard-operable; renders statically with no JS.
 const keys = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-key]'));
 if (keys.length) {
-  const COLS = 6;
-  keys.forEach((key, i) => { key.tabIndex = i === 0 ? 0 : -1; });
+  const COLS = 5;
+  keys.forEach((key, i) => {
+    key.tabIndex = i === 0 ? 0 : -1;
+  });
 
   const AudioCtor =
     window.AudioContext ??
@@ -112,7 +122,6 @@ if (keys.length) {
       if (audio.state === 'suspended') void audio.resume();
       const t = audio.currentTime;
 
-      // Bright click transient: a short band-passed noise burst.
       const dur = 0.05;
       const buffer = audio.createBuffer(1, Math.floor(audio.sampleRate * dur), audio.sampleRate);
       const ch = buffer.getChannelData(0);
@@ -131,7 +140,6 @@ if (keys.length) {
       noise.start(t);
       noise.stop(t + dur);
 
-      // Low "thock" body under the click.
       const osc = audio.createOscillator();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(190, t);
@@ -150,17 +158,19 @@ if (keys.length) {
 
   const press = (key: HTMLButtonElement) => {
     clack();
-    if (reduce) return; // reduced motion: sound only, no depress animation
+    if (reduce) return;
     key.classList.add('is-down');
     setTimeout(() => key.classList.remove('is-down'), 90);
   };
 
   keys.forEach((key, i) => {
-    // click fires for mouse, touch, and Enter/Space on a button.
     key.addEventListener('click', () => press(key));
     key.addEventListener('keydown', (e) => {
       const step: Record<string, number | undefined> = {
-        ArrowRight: 1, ArrowLeft: -1, ArrowUp: -COLS, ArrowDown: COLS,
+        ArrowRight: 1,
+        ArrowLeft: -1,
+        ArrowUp: -COLS,
+        ArrowDown: COLS,
       };
       const delta = step[e.key];
       if (delta === undefined) return;
@@ -174,14 +184,103 @@ if (keys.length) {
   });
 }
 
-// 7. Selected-work marquee — set the loop duration from content width so the
-// scroll speed stays constant no matter how many projects are added. The track
-// holds two identical copies, so one set is half its scroll width.
-const track = document.querySelector<HTMLElement>('[data-marquee] .marquee__track');
-if (track && !reduce) {
-  const oneSet = track.scrollWidth / 2;
-  if (oneSet > 0) {
-    const SPEED = 55; // px per second
-    track.style.setProperty('--marquee-duration', `${(oneSet / SPEED).toFixed(1)}s`);
-  }
+// 7. Marquee / ticker — set the loop duration from content width so the scroll
+// speed stays constant no matter how many items are added. Each track holds two
+// identical copies, so one set is half its scroll width. Supports any number of
+// [data-marquee] containers (project marquee + keyword ticker).
+if (!reduce) {
+  const SPEED = 55; // px per second
+  document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((box) => {
+    const track = box.querySelector<HTMLElement>('.marquee__track, .ticker__track');
+    if (!track) return;
+    const oneSet = track.scrollWidth / 2;
+    if (oneSet > 0) track.style.setProperty('--marquee-duration', `${(oneSet / SPEED).toFixed(1)}s`);
+  });
+}
+
+// 8. Scroll progress bar (data-progress) + parallax (data-parallax="<speed>").
+// One rAF-throttled scroll loop drives both.
+const progress = document.querySelector<HTMLElement>('[data-progress]');
+const parallax = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+if ((progress || parallax.length) && !reduce) {
+  let frame = 0;
+  const onScroll = () => {
+    frame = 0;
+    const y = window.scrollY;
+    if (progress) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.setProperty('--progress', max > 0 ? (y / max).toFixed(4) : '0');
+    }
+    for (const el of parallax) {
+      const speed = Number(el.dataset.parallax) || 0.1;
+      el.style.transform = `translate3d(0, ${(y * speed).toFixed(1)}px, 0)`;
+    }
+  };
+  const request = () => {
+    if (!frame) frame = requestAnimationFrame(onScroll);
+  };
+  window.addEventListener('scroll', request, { passive: true });
+  onScroll();
+}
+
+// 9. Active-section highlight in the nav. A thin band near the top of the
+// viewport decides which section is "current".
+const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-navlink]'));
+if (navLinks.length && 'IntersectionObserver' in window) {
+  const byId = new Map<string, HTMLAnchorElement>();
+  navLinks.forEach((a) => {
+    const id = a.getAttribute('href')?.replace('#', '');
+    if (id) byId.set(id, a);
+  });
+  const sections = Array.from(byId.keys())
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => Boolean(el));
+
+  const setActive = (id: string) => {
+    navLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    },
+    { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+  );
+  sections.forEach((s) => io.observe(s));
+}
+
+// 10. Magnetic buttons (data-magnet) — the control eases toward the pointer.
+if (fine && !reduce) {
+  const magnets = document.querySelectorAll<HTMLElement>('[data-magnet]');
+  magnets.forEach((el) => {
+    const STRENGTH = 0.3;
+    const MAX = 7; // px
+    let frame = 0;
+    let cx = 0;
+    let cy = 0;
+    const update = () => {
+      frame = 0;
+      const r = el.getBoundingClientRect();
+      const dx = cx - (r.left + r.width / 2);
+      const dy = cy - (r.top + r.height / 2);
+      const mx = Math.max(-MAX, Math.min(MAX, dx * STRENGTH));
+      const my = Math.max(-MAX, Math.min(MAX, dy * STRENGTH));
+      el.style.setProperty('--mag-x', `${mx.toFixed(1)}px`);
+      el.style.setProperty('--mag-y', `${my.toFixed(1)}px`);
+    };
+    el.addEventListener('pointermove', (e) => {
+      cx = e.clientX;
+      cy = e.clientY;
+      if (!frame) frame = requestAnimationFrame(update);
+    });
+    el.addEventListener('pointerleave', () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+      el.style.setProperty('--mag-x', '0px');
+      el.style.setProperty('--mag-y', '0px');
+    });
+  });
 }

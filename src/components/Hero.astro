@@ -6,136 +6,163 @@ const words = JSON.stringify(site.specializations);
 ---
 
 <header class="band hero" id="top">
-  <div class="inner hero__grid">
-    <div class="hero__main">
-      <p class="eyebrow" data-rise="0">software &amp; silicon</p>
-      <h1 class="hero__title" data-rise="1">{site.name}</h1>
-      <p class="hero__lead" data-rise="2">
-        Electrical engineering and computer science — currently focused on
-        <span class="kinetic-slot"
-          ><span class="kinetic" data-kinetic data-words={words}>{site.specializations[0]}</span></span
-        >
-      </p>
-      <div class="hero__cta" data-rise="3">
-        <a class="btn btn--primary" href={`mailto:${site.email}`}>Get in touch</a>
-        <a class="btn" href={site.resume}>Résumé</a>
-      </div>
-      <dl class="facts" data-rise="4">
-        <div class="fact">
-          <dt>Based in</dt>
-          <dd>{site.location}</dd>
-        </div>
-        <div class="fact">
-          <dt>Studying</dt>
-          <dd>{site.education}</dd>
-        </div>
-        <div class="fact">
-          <dt>Focus</dt>
-          <dd>{site.specializations.join(" · ")}</dd>
-        </div>
-        <div class="fact">
-          <dt>Find me</dt>
-          <dd class="facts__links">
-            {site.links.map((l) => <a href={l.href}>{l.label}</a>)}
-          </dd>
-        </div>
-      </dl>
+  <div class="aurora" aria-hidden="true" data-parallax="0.12">
+    <span class="aurora__blob aurora__blob--1"></span>
+    <span class="aurora__blob aurora__blob--2"></span>
+    <span class="aurora__blob aurora__blob--3"></span>
+  </div>
+
+  <div class="inner hero__inner">
+    <div class="hero__top" data-rise="0">
+      <p class="eyebrow">software &amp; silicon</p>
+      <StatusPill />
     </div>
 
-    <aside class="hero__panel" data-rise="5">
-      <StatusPill />
-      <div class="pad" data-spotlight data-tilt="16">
-        <div class="pad__shadow" aria-hidden="true"></div>
-        <div class="pad__stage">
-          <div class="pad__face pad__face--bottom" aria-hidden="true"></div>
-          <div class="pad__face pad__face--back" aria-hidden="true"></div>
-          <div class="pad__face pad__face--left" aria-hidden="true"></div>
-          <div class="pad__face pad__face--right" aria-hidden="true"></div>
-          <div class="pad__face pad__face--front" aria-hidden="true">
-            <span class="port"></span>
-          </div>
-          <div class="pad__face pad__face--top">
-            <div class="hinge" aria-hidden="true">
-              <span class="hinge__knuckle"></span>
-              <span class="hinge__knuckle"></span>
-              <span class="hinge__knuckle"></span>
-            </div>
-            <div
-              class="pad__keys"
-              role="group"
-              aria-label="Macropad — a nod to the keypad I built. Press a key."
-            >
-              {
-                Array.from({ length: 30 }).map((_, i) => (
-                  <button type="button" class="key" data-key aria-label={`Key ${i + 1}`}>
-                    <span class="key__wall key__wall--front" aria-hidden="true" />
-                    <span class="key__wall key__wall--left" aria-hidden="true" />
-                    <span class="key__wall key__wall--right" aria-hidden="true" />
-                  </button>
-                ))
-              }
-            </div>
-            <span class="screw screw--tl" aria-hidden="true"></span>
-            <span class="screw screw--tr" aria-hidden="true"></span>
-            <span class="screw screw--bl" aria-hidden="true"></span>
-            <span class="screw screw--br" aria-hidden="true"></span>
-            <span class="pad__label" aria-hidden="true">macropad</span>
-            <div class="pad__glow" aria-hidden="true"></div>
-          </div>
+    <h1 class="hero__name" data-rise="1">Justin <em>Chen</em></h1>
+
+    <div class="hero__row">
+      <div class="hero__intro">
+        <p class="hero__lead" data-rise="2">
+          Electrical engineering &amp; computer science at Purdue — currently building
+          <span class="kinetic-slot"
+            ><span class="kinetic" data-kinetic data-words={words}
+              >{site.specializations[0]}</span
+            ></span
+          >
+        </p>
+        <div class="hero__cta" data-rise="3">
+          <a class="btn btn--primary" href={`mailto:${site.email}`} data-magnet>Get in touch</a>
+          <a class="btn" href="#work">See my work</a>
         </div>
       </div>
-    </aside>
+
+      <aside class="hero__panel" data-rise="4">
+        <div class="pad" data-spotlight data-tilt="16">
+          <div class="pad__shadow" aria-hidden="true"></div>
+          <div class="pad__stage">
+            <div class="pad__face pad__face--bottom" aria-hidden="true"></div>
+            <div class="pad__face pad__face--back" aria-hidden="true"></div>
+            <div class="pad__face pad__face--left" aria-hidden="true"></div>
+            <div class="pad__face pad__face--right" aria-hidden="true"></div>
+            <div class="pad__face pad__face--front" aria-hidden="true">
+              <span class="port"></span>
+            </div>
+            <div class="pad__face pad__face--top">
+              <div class="hinge" aria-hidden="true">
+                <span class="hinge__knuckle"></span>
+                <span class="hinge__knuckle"></span>
+                <span class="hinge__knuckle"></span>
+              </div>
+              <div
+                class="pad__keys"
+                role="group"
+                aria-label="Macropad — a nod to the keypad I built. Press a key."
+              >
+                {
+                  Array.from({ length: 25 }).map((_, i) => (
+                    <button type="button" class="key" data-key aria-label={`Key ${i + 1}`}>
+                      <span class="key__wall key__wall--front" aria-hidden="true" />
+                      <span class="key__wall key__wall--left" aria-hidden="true" />
+                      <span class="key__wall key__wall--right" aria-hidden="true" />
+                    </button>
+                  ))
+                }
+              </div>
+              <span class="screw screw--tl" aria-hidden="true"></span>
+              <span class="screw screw--tr" aria-hidden="true"></span>
+              <span class="screw screw--bl" aria-hidden="true"></span>
+              <span class="screw screw--br" aria-hidden="true"></span>
+              <span class="pad__label" aria-hidden="true">macropad</span>
+              <div class="pad__glow" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <dl class="facts" data-rise="5">
+      <div class="fact">
+        <dt>Based in</dt>
+        <dd>{site.location}</dd>
+      </div>
+      <div class="fact">
+        <dt>Studying</dt>
+        <dd>{site.education}</dd>
+      </div>
+      <div class="fact">
+        <dt>Focus</dt>
+        <dd>{site.specializations.join(" · ")}</dd>
+      </div>
+      <div class="fact">
+        <dt>Find me</dt>
+        <dd class="facts__links">
+          {site.links.map((l) => <a href={l.href}>{l.label}</a>)}
+        </dd>
+      </div>
+    </dl>
   </div>
 </header>
 
 <style>
-  .hero .inner {
-    padding-top: var(--sp-16);
-    padding-bottom: var(--sp-16);
+  .hero {
+    overflow: clip; /* keep the aurora + parallax off the next section */
   }
-  .hero__grid {
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(var(--sp-6), 3vw, var(--sp-12));
+    padding-top: clamp(var(--sp-16), 9vw, var(--sp-24));
+    padding-bottom: clamp(var(--sp-12), 6vw, var(--sp-20));
+  }
+  .hero__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .hero__name {
+    font-size: var(--fs-hero);
+    font-weight: var(--fw-light);
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+  }
+  .hero__name em {
+    font-style: normal;
+    font-weight: var(--fw-semibold);
+    color: var(--accent);
+  }
+  .hero__row {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: var(--sp-12);
-    align-items: start;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(var(--sp-8), 4vw, var(--sp-16));
+    align-items: center;
   }
-  .hero__main {
+  .hero__intro {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--sp-4);
-  }
-  .hero__title {
-    font-size: var(--fs-display);
+    gap: var(--sp-6);
   }
   .hero__lead {
     font-size: var(--fs-lead);
     color: var(--text-secondary);
-    max-width: 36rem;
+    max-width: 34rem;
   }
-  /* Reserve width so the cycling word never shifts layout (CLS ~ 0). */
+  /* The cycling word ends the sentence, so its changing width shifts
+     nothing after it — no reserved min-width needed. */
   .kinetic-slot {
     display: inline-block;
-    min-width: 6em;
+    white-space: nowrap;
   }
   .hero__cta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--sp-3);
-    margin-top: var(--sp-2);
   }
-  /* Warm "clay" pedestal — a deeper peach than the cream surface so the light
-     macropad separates and the right side carries weight, while staying on the
-     warm/light theme. One accent only (tinted into the surface). */
   .hero__panel {
-    border: var(--hairline) solid color-mix(in srgb, var(--accent) 30%, var(--border-strong));
-    border-radius: var(--radius-card);
-    background: linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--accent) 18%, var(--surface)),
-      color-mix(in srgb, var(--accent) 30%, var(--surface))
-    );
-    padding: var(--sp-6);
     display: flex;
     flex-direction: column;
     gap: var(--sp-4);
@@ -143,16 +170,17 @@ const words = JSON.stringify(site.specializations);
   .facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: var(--sp-4) var(--sp-8);
-    width: 100%;
-    max-width: 32rem;
-    margin: var(--sp-4) 0 0;
+    gap: var(--sp-6) var(--sp-8);
+    margin: 0;
+    padding-top: clamp(var(--sp-6), 3vw, var(--sp-10));
+    border-top: var(--hairline) solid var(--border);
   }
   .fact dt {
     font-family: var(--font-mono);
     font-size: var(--fs-mono);
     letter-spacing: 0.5px;
     color: var(--text-tertiary);
+    margin-bottom: var(--sp-1);
   }
   .fact dd {
     margin: 0;
@@ -161,18 +189,15 @@ const words = JSON.stringify(site.specializations);
   }
   .facts__links {
     display: flex;
-    gap: var(--sp-3);
+    gap: var(--sp-4);
   }
-  .facts__links a {
-    color: var(--accent);
-  }
-  @media (max-width: 48rem) {
-    .hero__grid {
+  .facts__links a { color: var(--accent); }
+
+  @media (max-width: 52rem) {
+    .hero__row {
       grid-template-columns: 1fr;
-      gap: var(--sp-8);
+      gap: var(--sp-10);
     }
-    .hero .inner {
-      padding-top: var(--sp-16);
-    }
+    .hero__panel { order: -1; } /* macropad leads on mobile */
   }
 </style>

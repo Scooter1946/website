@@ -1,15 +1,30 @@
 ---
 import { site } from "../data/site";
+
+const links = [
+  { label: "Experience", href: "#experience" },
+  { label: "Work", href: "#work" },
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
+];
 ---
+
+<div class="scroll-progress" data-progress aria-hidden="true"></div>
 
 <nav class="nav" aria-label="Primary">
   <div class="nav__inner">
     <a class="nav__name" href="#top">{site.name}</a>
     <ul class="nav__links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} data-navlink>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </nav>
@@ -18,38 +33,63 @@ import { site } from "../data/site";
   .nav {
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(8px);
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(10px);
     border-bottom: var(--hairline) solid var(--border);
   }
   .nav__inner {
-    max-width: 72rem;
+    max-width: var(--maxw);
     margin-inline: auto;
-    padding: var(--sp-3) var(--sp-6);
+    padding: var(--sp-3) var(--gutter);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sp-4);
+    gap: var(--sp-6);
   }
   .nav__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
-    font-weight: 500;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
-  .nav__name:hover {
-    text-decoration: none;
-  }
+  .nav__name:hover { text-decoration: none; }
   .nav__links {
     list-style: none;
     display: flex;
-    gap: var(--sp-4);
+    gap: var(--sp-6);
     padding: 0;
+    margin: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .nav__links::-webkit-scrollbar { display: none; }
   .nav__links a {
+    position: relative;
     color: var(--text-secondary);
     font-size: var(--fs-caption);
+    white-space: nowrap;
   }
-  .nav__links a:hover {
-    color: var(--text-primary);
+  .nav__links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -5px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+  .nav__links a:hover { color: var(--text-primary); text-decoration: none; }
+  .nav__links a:hover::after,
+  .nav__links a.is-active::after { transform: scaleX(1); }
+  .nav__links a.is-active { color: var(--text-primary); }
+
+  @media (max-width: 40rem) {
+    .nav__links { gap: var(--sp-4); }
   }
 </style>
