@@ -103,7 +103,7 @@ export const site = {
       company: "Monta Vista Robotics (FRC)",
       role: "Director of Software",
       period: "Nov 2021 — Jun 2025",
-      summary: "Led robot-control software for a 10-person team.",
+      summary: "Led robot-control software on a 100+ person team.",
       tags: ["Java", "FSM", "Leadership"],
     },
   ] as Experience[],
