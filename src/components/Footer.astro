@@ -4,7 +4,7 @@ import { site } from "../data/site";
 const year = 2026; // TODO(user): bump as needed
 ---
 
-<footer class="band band--alt" id="contact">
+<footer class="band band--dark" id="contact" data-spotlight>
   <div class="inner">
     <div class="section-head" data-reveal>
       <div class="section-head__eyebrow">
@@ -14,13 +14,14 @@ const year = 2026; // TODO(user): bump as needed
     </div>
 
     <div class="contact">
-      <p class="contact__big" data-reveal style="--i:0">Let's build <em>something</em>.</p>
+      <h2 class="contact__big" data-reveal>Let's build <em>something</em>.</h2>
       <p class="contact__lead" data-reveal style="--i:1">
-        Email's the fastest way to reach me — happy to send my résumé on request.
+        Got a role, a project, or just want to say hi? Email's the fastest way to reach
+        me — happy to send my résumé on request.
       </p>
 
       <div class="contact__actions" data-reveal style="--i:2">
-        <a class="btn btn--primary contact__email" href={`mailto:${site.email}`} data-magnet>
+        <a class="btn btn--primary" href={`mailto:${site.email}`} data-magnet>
           <span class="btn__icon">
             <svg
               width="16"
@@ -37,12 +38,20 @@ const year = 2026; // TODO(user): bump as needed
               <polyline points="3 7 12 13 21 7"></polyline>
             </svg>
           </span>
-          {site.email}
+          Get in touch
         </a>
+        <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
       </div>
 
-      <nav class="contact__social" data-reveal style="--i:3" aria-label="Social links">
-        {site.links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <nav class="contact__social" data-reveal style="--i:3" aria-label="Find me elsewhere">
+        {
+          site.links.map((l) => (
+            <a href={l.href} target="_blank" rel="noopener noreferrer">
+              {l.label}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))
+        }
       </nav>
 
       <p class="contact__legal">© {year} {site.name} · {site.location}</p>

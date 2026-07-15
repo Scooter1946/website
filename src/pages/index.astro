@@ -131,8 +131,9 @@ const personLd = {
         </div>
       </section>
 
-      <section id="about" class="band band--dark">
+      <section id="about" class="band band--dark" data-spotlight>
         <div class="inner">
+          <h2 class="visually-hidden">About</h2>
           <div class="section-head" data-reveal>
             <div class="section-head__eyebrow">
               <span class="section-head__index">03 / about</span>
@@ -169,13 +170,15 @@ const personLd = {
           </div>
           <dl class="skills">
             {
-              site.skills.map((group, i) => (
-                <div class="skill-group" data-reveal style={`--i:${i}`}>
-                  <dt>{group.group}</dt>
+              site.skills.map((group) => (
+                <div class="skill-group">
+                  <dt data-reveal>{group.group}</dt>
                   <dd>
                     <ul class="skills__items">
-                      {group.items.map((item) => (
-                        <li class="tag">{item}</li>
+                      {group.items.map((item, j) => (
+                        <li class="tag" data-reveal style={`--i:${j}`}>
+                          {item}
+                        </li>
                       ))}
                     </ul>
                   </dd>

@@ -113,7 +113,9 @@
   border-radius: var(--radius-pill);
   padding: 3px var(--sp-3);
   transition: transform var(--dur-hover) var(--ease-spring),
-              background var(--dur-hover) var(--ease-standard);
+              background var(--dur-hover) var(--ease-standard),
+              color var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard);
 }
 .tag:hover {
   transform: translateY(-2px);
@@ -518,26 +520,81 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
 .skills__items .tag {
   font-family: var(--font-body);
   font-size: var(--fs-caption);
-  padding: 5px var(--sp-4);
+  padding: 6px var(--sp-4);
+  cursor: default;
+}
+.skills__items .tag:hover {
+  transform: translateY(-3px) scale(1.06);
+  background: var(--grad-warm);
+  color: var(--on-accent);
+  border-color: transparent;
 }
 @media (max-width: 40rem) {
   .skill-group { grid-template-columns: 1fr; gap: var(--sp-2); }
 }
+
+/* --- Reactive dark band: a warm glow tracks the pointer (About + Contact).
+ * Pointer-driven via --mx/--my (enhance.ts data-spotlight); falls back to a
+ * static centred glow on touch / reduced-motion. --------------------------- */
+.band--dark { overflow: clip; }
+.band--dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(36rem 36rem at var(--mx, 50%) var(--my, 32%),
+    color-mix(in srgb, var(--accent) 26%, transparent), transparent 62%);
+}
+.band--dark .inner { position: relative; z-index: 1; }
 
 /* --- Contact --------------------------------------------------------- */
 .contact { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-4); }
 .contact__big {
   font-size: var(--fs-display);
   font-weight: var(--fw-normal);
-  max-width: 16ch;
+  max-width: 14ch;
 }
-.contact__big em { font-style: normal; font-weight: var(--fw-semibold); color: var(--accent); }
-.contact__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
-.contact__email { display: inline-flex; align-items: center; gap: var(--sp-2); }
-.contact__social { display: flex; gap: var(--sp-6); margin-top: var(--sp-6); }
-.contact__social a { color: var(--text-secondary); font-size: var(--fs-caption); }
-.contact__social a:hover { color: var(--text-primary); }
-.contact__legal { color: var(--text-tertiary); font-size: var(--fs-caption); margin-top: var(--sp-12); }
+.contact__big em { font-style: normal; font-weight: var(--fw-semibold); color: var(--accent-2); }
+.contact__lead {
+  color: var(--dark-text-secondary);
+  font-size: var(--fs-lead);
+  max-width: 44ch;
+}
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-6);
+  margin-top: var(--sp-4);
+}
+.contact__email {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--dark-text);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  padding-bottom: 2px;
+  transition: color var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard);
+}
+.contact__email:hover { color: var(--accent-2); border-color: var(--accent-2); text-decoration: none; }
+.contact__social { display: flex; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-10); }
+.contact__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--dark-text);
+  font-size: var(--fs-caption);
+  transition: color var(--dur-hover) var(--ease-standard);
+}
+.contact__social a span {
+  display: inline-block;
+  color: var(--accent-2);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+.contact__social a:hover { color: var(--accent-2); text-decoration: none; }
+.contact__social a:hover span { transform: translate(2px, -2px); }
+.contact__legal { color: var(--dark-text-secondary); font-size: var(--fs-caption); margin-top: var(--sp-12); }
 
 /* ====================================================================== *
  * Macropad (hero visual) — a nod to the custom keypad, built as a REAL
