@@ -633,6 +633,44 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
              rotateY(var(--ry, 0deg));
   transition: transform var(--dur-hover) var(--ease-standard);
 }
+/* Locked: the pad glides to a flat, head-on orientation (from wherever it
+   was) and ignores pointer tilt, so the keys are easy to click. */
+.pad--locked .pad__stage {
+  transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+  transition: transform 460ms var(--ease-out);
+}
+
+/* Lock toggle beneath the macropad — a JS-only control (hidden with no JS,
+   where the pad is already static at its base tilt). */
+.pad-lock { display: none; }
+.js .pad-lock {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  border: var(--hairline) solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: var(--sp-2) var(--sp-4);
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-standard),
+              border-color var(--dur-hover) var(--ease-standard),
+              background var(--dur-hover) var(--ease-standard);
+}
+.pad-lock:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-strong));
+}
+.pad-lock.is-locked {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.pad-lock svg { flex-shrink: 0; }
 .pad__face { position: absolute; top: 50%; left: 50%; }
 .pad__face--top {
   width: var(--pw); height: var(--pd);
@@ -752,6 +790,21 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
 .key:hover::after { opacity: 0.2; }
 .key:active, .key.is-down { transform: translateZ(calc(var(--kh) - 8px)); }
 .key:active::after, .key.is-down::after { opacity: 0.55; }
+/* Name-spelling game: keys forming the current letter light up amber (--lit);
+   clicking one damps it (--damped) until every letter key is clicked, then the
+   next letter shows. Recoloring the cap vars tints the top face AND the walls. */
+.key--lit {
+  --cap-top-lo: color-mix(in srgb, var(--accent-2) 55%, var(--surface));
+  --cap-top-hi: var(--accent-2);
+  --cap-side-lo: color-mix(in srgb, var(--accent-2) 62%, var(--text-primary));
+  --cap-side-hi: color-mix(in srgb, var(--accent-2) 42%, var(--text-primary));
+}
+.key--damped {
+  --cap-top-lo: color-mix(in srgb, var(--accent-2) 16%, var(--surface));
+  --cap-top-hi: color-mix(in srgb, var(--accent-2) 32%, var(--surface));
+  --cap-side-lo: color-mix(in srgb, var(--accent-2) 24%, var(--text-primary));
+  --cap-side-hi: color-mix(in srgb, var(--accent-2) 15%, var(--text-primary));
+}
 .pad__glow {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   border-radius: inherit;

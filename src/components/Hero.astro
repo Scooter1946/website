@@ -36,7 +36,7 @@ const words = JSON.stringify(site.specializations);
       </div>
 
       <aside class="hero__panel" data-rise="4">
-        <div class="pad" data-spotlight data-tilt="16">
+        <div class="pad" data-spotlight data-tilt="28">
           <div class="pad__shadow" aria-hidden="true"></div>
           <div class="pad__stage">
             <div class="pad__face pad__face--bottom" aria-hidden="true"></div>
@@ -76,6 +76,23 @@ const words = JSON.stringify(site.specializations);
             </div>
           </div>
         </div>
+        <button type="button" class="pad-lock" data-pad-lock aria-pressed="false">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span class="pad-lock__label">Lock to click</span>
+        </button>
       </aside>
     </div>
 

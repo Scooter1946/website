@@ -163,8 +163,58 @@ if (keys.length) {
     setTimeout(() => key.classList.remove('is-down'), 90);
   };
 
+  // --- Name-spelling game -------------------------------------------------
+  // The keys forming the current letter of the name light up (amber). Clicking
+  // a lit key damps it; once every lit key for the letter has been clicked, the
+  // next letter appears. 5x5 uppercase bitmaps, row-major to match key order.
+  const NAME = 'JUSTINCHEN';
+  const FONT: Record<string, string[]> = {
+    J: ['01110', '00010', '00010', '10010', '01100'],
+    U: ['10001', '10001', '10001', '10001', '01110'],
+    S: ['01111', '10000', '01110', '00001', '11110'],
+    T: ['11111', '00100', '00100', '00100', '00100'],
+    I: ['11111', '00100', '00100', '00100', '11111'],
+    N: ['10001', '11001', '10101', '10011', '10001'],
+    C: ['01110', '10001', '10000', '10001', '01110'],
+    H: ['10001', '10001', '11111', '10001', '10001'],
+    E: ['11111', '10000', '11110', '10000', '11111'],
+  };
+  let letterIdx = 0;
+  const lit = new Set<number>();
+  const hit = new Set<number>();
+  let advancing = false;
+
+  const showLetter = (idx: number) => {
+    const bits = (FONT[NAME[idx]] ?? []).join('');
+    lit.clear();
+    hit.clear();
+    advancing = false;
+    keys.forEach((key, i) => {
+      key.classList.remove('key--lit', 'key--damped');
+      if (bits[i] === '1') {
+        key.classList.add('key--lit');
+        lit.add(i);
+      }
+    });
+  };
+
+  const registerHit = (i: number) => {
+    if (advancing || !lit.has(i) || hit.has(i)) return;
+    hit.add(i);
+    keys[i].classList.remove('key--lit');
+    keys[i].classList.add('key--damped');
+    if (hit.size === lit.size) {
+      advancing = true; // ignore clicks during the hand-off to the next letter
+      letterIdx = (letterIdx + 1) % NAME.length;
+      setTimeout(() => showLetter(letterIdx), 420);
+    }
+  };
+
   keys.forEach((key, i) => {
-    key.addEventListener('click', () => press(key));
+    key.addEventListener('click', () => {
+      press(key);
+      registerHit(i);
+    });
     key.addEventListener('keydown', (e) => {
       const step: Record<string, number | undefined> = {
         ArrowRight: 1,
@@ -181,6 +231,24 @@ if (keys.length) {
       target.tabIndex = 0;
       target.focus();
     });
+  });
+
+  // Light up the first letter to kick off the name.
+  showLetter(0);
+}
+
+// 6b. Macropad lock toggle — pins the pad flat/forward so keys are easy to
+// click. The locked CSS transform ignores the pointer tilt, and the stage's
+// transition makes it glide there smoothly from any current position.
+const pad = document.querySelector<HTMLElement>('.pad');
+const lockBtn = document.querySelector<HTMLButtonElement>('[data-pad-lock]');
+if (pad && lockBtn) {
+  const label = lockBtn.querySelector<HTMLElement>('.pad-lock__label');
+  lockBtn.addEventListener('click', () => {
+    const locked = pad.classList.toggle('pad--locked');
+    lockBtn.classList.toggle('is-locked', locked);
+    lockBtn.setAttribute('aria-pressed', String(locked));
+    if (label) label.textContent = locked ? 'Unlock' : 'Lock to click';
   });
 }
 
