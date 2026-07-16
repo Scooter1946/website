@@ -73,10 +73,9 @@ export const site = {
     { label: "GitHub", href: "https://github.com/Scooter1946" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/justin-chen-a60a8a283/" },
   ],
-  aboutQuote:
-    "I fell for software through competitive programming — now I like working top to bottom, from the pixels down to the silicon.",
+  aboutQuote: "My favorite projects are the ones where code meets physical hardware.",
   about:
-    "These days that means a React app someone actually enjoys one week and SystemVerilog on an FPGA the next. I care most about building things that are fast and genuinely pleasant to use — and I qualified for the AIME along the way, which is where the taste for hard problems started.",
+    "My path started in competitive programming and quickly spilled over into physical hardware. Whether it is building a smart beehive monitor, assembling a 3-DOF robotic arm, or hand-wiring the macropad up top, I go wherever the interesting problems are. I shift between code and circuits because I get bored doing just one, and I will take a complex, messy challenge over a perfect resume line any day.",
   experience: [
     {
       company: "Vivalink",
