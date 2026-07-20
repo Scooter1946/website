@@ -257,13 +257,13 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
     border-color var(--dur-hover) var(--ease-standard),
     box-shadow var(--dur-hover) var(--ease-standard);
 }
-.card:hover, .card:focus-within {
+.card:hover, .card:focus-visible {
   --ty: -8px; --sc: 1.02;
   z-index: 1;
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border-strong));
   box-shadow: 0 22px 45px -22px color-mix(in srgb, var(--text-primary) 45%, transparent);
 }
-.card:hover, .card:focus-within { text-decoration: none; }
+.card:hover, .card:focus-visible { text-decoration: none; }
 /* Pointer spotlight (centered-top fallback with no JS). */
 .card::before {
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -272,7 +272,7 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
               color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%);
   opacity: 0; transition: opacity var(--dur-hover) var(--ease-standard);
 }
-.card:hover::before, .card:focus-within::before { opacity: 1; }
+.card:hover::before, .card:focus-visible::before { opacity: 1; }
 .card > * { position: relative; z-index: 1; }
 
 .card__index {
@@ -293,7 +293,7 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
   flex-shrink: 0;
   transition: transform var(--dur-hover) var(--ease-out);
 }
-.card:hover .card__arrow, .card:focus-within .card__arrow {
+.card:hover .card__arrow, .card:focus-visible .card__arrow {
   transform: translate(4px, -4px);
 }
 .card__badge {
@@ -328,8 +328,12 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
 }
 .bento__item { display: flex; grid-column: span 2; }
 .bento__item > .card { width: 100%; }
-.bento__item--featured { grid-column: span 4; }
-/* Flagship tile — warm wash + larger type so it reads as the headline. */
+/* Span-4 tiles (4 of 6 columns): the featured flagship, plus an optional
+   --wide closer kept available for wider layouts. Currently only [0] is
+   featured — 1 flagship + 7 standard span-2 tiles fill 3 full rows. */
+.bento__item--featured,
+.bento__item--wide { grid-column: span 4; }
+/* Flagship tile — warm wash so it reads as the headline. */
 .bento__item--featured > .card {
   background:
     radial-gradient(130% 130% at 100% 0%,
@@ -337,17 +341,22 @@ a.stat__body:hover .stat__ext { transform: translate(3px, -3px); }
     var(--surface);
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border-strong));
 }
-.bento__item--featured .card__title { font-size: var(--fs-h1); }
-.bento__item--featured .card__outcome { font-size: var(--fs-lead); max-width: 42ch; }
+/* Both wide tiles get larger type to fill the extra width. */
+.bento__item--featured .card__title,
+.bento__item--wide .card__title { font-size: var(--fs-h1); }
+.bento__item--featured .card__outcome,
+.bento__item--wide .card__outcome { font-size: var(--fs-lead); max-width: 42ch; }
 @media (max-width: 64rem) {
   .bento { grid-template-columns: repeat(2, 1fr); }
   .bento__item { grid-column: span 1; }
-  .bento__item--featured { grid-column: span 2; }
+  .bento__item--featured,
+  .bento__item--wide { grid-column: span 2; }
 }
 @media (max-width: 40rem) {
   .bento { grid-template-columns: 1fr; }
   .bento__item,
-  .bento__item--featured { grid-column: span 1; }
+  .bento__item--featured,
+  .bento__item--wide { grid-column: span 1; }
 }
 
 /* --- Experience timeline -------------------------------------------- */

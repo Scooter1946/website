@@ -106,6 +106,10 @@ export const site = {
       tags: ["Java", "FSM", "Leadership"],
     },
   ] as Experience[],
+  // Order matters for the bento grid (6 columns): [0] is the featured flagship
+  // and spans 4 columns; every other card spans 2. The grid stays gap-free when
+  // the number of standard (non-flagship) tiles is 1, 4, 7, … (≡ 1 mod 3).
+  // Currently 7 standard tiles + the flagship = 8 cards = 3 full rows.
   projects: [
     {
       title: "Remote beehive health monitor",
@@ -114,7 +118,16 @@ export const site = {
       outcome:
         "An end-to-end IoT health monitor: an on-device C++ neural net at 95% accuracy fuses 4 sensor streams into live alerts on a real-time dashboard — 3rd at Starkhacks (Analog Devices track), the world's largest hardware hackathon, shown to Ford, AMD & Espressif.",
       tags: ["C++", "Embedded ML", "IoT"],
-      href: "https://github.com/Scooter1946",
+      href: "https://devpost.com/software/beealive",
+    },
+    {
+      title: "PitchLoop",
+      badge: "2nd · zero.xyz",
+      period: "Jul 2026",
+      outcome:
+        "An autonomous outreach agent: give it a goal in plain English and it finds prospects, places paid outbound calls, diagnoses failed pitches, and ships new tools for itself via PRs — all policy-checked with hard budget caps. 2nd of 195+ in the zero.xyz track ($500).",
+      tags: ["Python", "FastAPI", "AI agents"],
+      href: "https://devpost.com/software/pitchloop",
     },
     {
       title: "Real-time limit order book",
@@ -122,15 +135,22 @@ export const site = {
       outcome:
         "A price-time-priority matching engine in C++ with automated market-making bots — quote two-sided markets and manage inventory risk inside a simulated exchange.",
       tags: ["C++", "Low-latency", "Trading"],
-      href: "https://github.com/Scooter1946",
+      href: "https://github.com/Scooter1946", // TODO(user): dedicated repo/demo
     },
     {
-      title: "Macropad",
-      period: "Jan — Mar 2025",
+      title: "Maze algorithm visualizer",
       outcome:
-        "The one up top, for real: custom RP2040 firmware with layered key mappings and RGB control, in a hinged, latchable enclosure I designed to be portable and serviceable.",
-      tags: ["RP2040", "Firmware", "CAD"],
-      href: "https://github.com/Scooter1946",
+        "Generates mazes with Prim's algorithm, then races DFS, BFS, and A* through them so you can watch each strategy explore and solve in real time.",
+      tags: ["JavaScript", "Pathfinding", "A*"],
+      href: "https://github.com/Scooter1946/maze-algo-visualizer",
+    },
+    {
+      title: "Handwritten digit detector",
+      period: "Nov — Dec 2025",
+      outcome:
+        "Real-time digit recognition — an OpenCV pipeline (grayscale, Canny, contour finding, perspective warp, adaptive thresholding) feeding an MNIST-trained CNN for live, frame-by-frame inference.",
+      tags: ["Python", "OpenCV", "PyTorch"],
+      href: "https://github.com/Scooter1946/cv-number-detector",
     },
     {
       title: "3-DOF robotic arm",
@@ -138,15 +158,23 @@ export const site = {
       outcome:
         "Hand-derived forward kinematics and transformation matrices driving a 3-DOF arm, with distance-based error minimization for smooth, continuous motion paths.",
       tags: ["Robotics", "Kinematics", "Control"],
-      href: "https://github.com/Scooter1946",
+      href: "https://github.com/Scooter1946", // TODO(user): dedicated repo/demo
     },
     {
-      title: "Handwritten digit detector",
-      period: "Nov — Dec 2025",
+      title: "Macropad",
+      period: "Jan — Mar 2025",
       outcome:
-        "Real-time digit recognition — a computer-vision pipeline (contour detection, perspective transforms, adaptive thresholding) feeding a CNN for frame-by-frame inference on live camera input.",
-      tags: ["Python", "OpenCV", "PyTorch"],
-      href: "https://github.com/Scooter1946",
+        "The one up top, for real: custom RP2040 firmware with layered key mappings and RGB control, in a hinged, latchable enclosure I designed to be portable and serviceable.",
+      tags: ["RP2040", "Firmware", "CAD"],
+      href: "https://github.com/Scooter1946", // TODO(user): dedicated repo/demo
+    },
+    {
+      title: "Personal website",
+      period: "2026",
+      outcome:
+        "The site you're on — a static Astro build with a hand-built CSS-3D macropad, scroll-driven motion, and a warm editorial design system. No UI framework, ~2 KB of JS, fully responsive and accessible.",
+      tags: ["Astro", "TypeScript", "CSS"],
+      href: "https://github.com/Scooter1946/website",
     },
   ] as Project[],
   skills: [

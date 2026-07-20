@@ -5,7 +5,7 @@ const { project, index = 0 } = Astro.props as { project: Project; index?: number
 const num = String(index + 1).padStart(2, "0");
 ---
 
-<a class="card" href={project.href} data-tilt data-spotlight>
+<a class="card" href={project.href} target="_blank" rel="noopener noreferrer" data-tilt data-spotlight>
   <div class="card__meta">
     <span class="card__index">{num}</span>
     {project.period && <span class="card__period">{project.period}</span>}
