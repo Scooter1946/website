@@ -1,0 +1,46 @@
+---
+import "../../styles/signal-sift.css";
+---
+
+<div class="sift-demo" data-sift data-state="review" data-paused="false" aria-label="Sample reimbursement check">
+  <header class="sift-demo__header">
+    <div>
+      <p class="sift-demo__eyebrow">Receipt reconciliation</p>
+      <p class="sift-demo__note">Demo</p>
+    </div>
+    <span class="sift-demo__result" data-sift-result>Needs review</span>
+  </header>
+
+  <div class="sift-demo__stage" aria-label="Compare a sample receipt with a reimbursement claim">
+    <article class="sift-paper sift-paper--receipt" aria-label="Sample receipt: lab materials, 42 dollars">
+      <p class="sift-paper__label">Receipt</p>
+      <p class="sift-paper__merchant">Sample vendor</p>
+      <p class="sift-paper__detail">Lab materials · Oct 14</p>
+      <div class="sift-paper__rule"></div>
+      <div class="sift-paper__line"><span>Component kit</span><span>$42.00</span></div>
+      <div class="sift-paper__rule sift-paper__rule--dashed"></div>
+      <div class="sift-paper__total"><span>Total</span><strong>$42.00</strong></div>
+      <div class="sift-paper__receipt-mark" aria-hidden="true"></div>
+    </article>
+
+    <article class="sift-paper sift-paper--claim" aria-label="Sample reimbursement claim">
+      <p class="sift-paper__label">Reimbursement claim</p>
+      <p class="sift-paper__merchant">Lab supplies</p>
+      <p class="sift-paper__detail">Submitted by · Sample claimant</p>
+      <div class="sift-paper__rule"></div>
+      <div class="sift-paper__line"><span>Claimed</span><span class="sift-paper__claim-amount" data-sift-amount>$48.00</span></div>
+      <div class="sift-paper__rule sift-paper__rule--dashed"></div>
+      <div class="sift-paper__total"><span>Receipt match</span><strong data-sift-match-value>$42.00</strong></div>
+      <span class="sift-paper__flag" data-sift-flag>Difference&nbsp; $6.00</span>
+    </article>
+
+    <span class="sift-demo__link-mark" aria-hidden="true"><span></span></span>
+    <span class="sift-scan" aria-hidden="true"></span>
+  </div>
+
+  <div class="sift-demo__controls" aria-label="Change the demo" hidden>
+    <button type="button" data-sift-match aria-pressed="false">Match receipt</button>
+    <button type="button" data-sift-review aria-pressed="true">Try a mismatch</button>
+  </div>
+  <p class="sift-demo__announcement" data-sift-announcement aria-live="polite" aria-atomic="true">Claim is $48.00 and receipt is $42.00. Needs review.</p>
+</div>

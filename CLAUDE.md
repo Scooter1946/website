@@ -1,4 +1,8 @@
+> October 19, 2026 release: the approved Signal design is now the homepage, rendered by `src/components/SignalPage.astro`. The draft URL shares this component and stays noindex. `redesign/SIGNAL-DIRECTION.md` documents the accepted Pigment background, Copper typography, interactive projects, and cards. The older design rules below apply only to the legacy components.
+
 # CLAUDE.md — personal portfolio site
+
+> October 15, 2026 redesign: the owner requested a complete, light-neutral redesign and three independent drafts. New work under `src/pages/drafts/` follows `redesign/RESEARCH-AND-DIRECTION.md`, which supersedes the older visual rules below for those drafts. The original homepage is retained for comparison. Do not reintroduce its components, effects, or styling into the new drafts. Shared factual content and the no-resume-download preference still apply. Local preview instructions are in `redesign/README.md`.
 
 ## Project
 A static personal website for Justin Chen, a software / electrical engineering candidate (Purdue EE B.S./M.S., competitive programmer, hardware + software). Design philosophy: **"kinetic editorial, warm"** — expressive, type-led layout that feels alive and in motion, built on a warm peach palette, with a physical-build signature moment (the macropad). Bold and characterful, not minimal — but never at the cost of accessibility or load speed.

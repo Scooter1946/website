@@ -1,0 +1,38 @@
+---
+import '../../styles/signal-cpu.css';
+---
+
+<section class="signal-cpu" data-cpu-demo aria-label="Illustrative CPU model">
+  <div class="signal-cpu-meta">
+    <span class="signal-cpu-caption">CPU illustration</span>
+    <span class="signal-cpu-phase" data-cpu-status>Fetch</span>
+  </div>
+  <div class="signal-cpu-stage" data-cpu-stage>
+    <div class="signal-cpu-canvas" data-cpu-canvas aria-hidden="true"></div>
+    <svg class="signal-cpu-fallback" viewBox="0 0 480 320" role="img" aria-label="Perspective illustration of an opened semiconductor package with a silicon die, fine gold bond wires, and perimeter contacts">
+      <defs>
+        <linearGradient id="cpu-board-fallback" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#91a398"/><stop offset="1" stop-color="#52675d"/></linearGradient>
+        <linearGradient id="cpu-die-fallback" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7c9387"/><stop offset="1" stop-color="#344944"/></linearGradient>
+        <pattern id="cpu-cell-fallback" width="8" height="7" patternUnits="userSpaceOnUse"><path d="M1 1h5v4H1z" fill="#b7c4b9" fill-opacity=".56" stroke="#d8dfd6" stroke-opacity=".55" stroke-width=".55"/></pattern>
+      </defs>
+      <ellipse cx="245" cy="264" rx="174" ry="20" fill="#33463d" opacity=".1"/>
+      <path d="m82 110 226 35 102-47-226-38z" fill="#b9a17b" opacity=".55"/>
+      <path d="m68 115 235 39 109-51v75l-112 60-232-42z" fill="url(#cpu-board-fallback)" stroke="#4d6358" stroke-width="2"/>
+      <path d="m68 190 232 42v14l-232-42z" fill="#43564e"/><path d="m300 232 112-60v14l-112 60z" fill="#354b42"/>
+      <g fill="#c7a876" stroke="#866f50" stroke-width="1">
+        <path d="m91 198 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2zm24 4 8 2v23l-8-2z"/>
+      </g>
+      <path d="m126 105 164 27 78-36-164-26z" fill="#243b34" stroke="#d0b783" stroke-width="2"/>
+      <path d="m134 103 154 25 69-33-154-24z" fill="url(#cpu-die-fallback)" stroke="#b8c8bc" stroke-width="1.5"/>
+      <path d="m148 101 44 7 21-10-44-7z" fill="url(#cpu-cell-fallback)"/><path d="m223 113 45 7 22-11-45-7z" fill="url(#cpu-cell-fallback)"/>
+      <path d="m155 111 35 6 20-10-35-6zm104 15 22 4 20-10-22-4z" fill="url(#cpu-cell-fallback)"/>
+      <g fill="none" stroke="#d4b982" stroke-width="1.3" opacity=".95">
+        <path d="m134 104q-20-17-30 2l-14 11m28-15q-8-22-23-4l-18 11m49-8q1-22-15-12l-26 11m61-7q0-25-17-15l-25 11"/>
+        <path d="m286 128q26-12 28 3l26-16m-43 13q24-20 40-5l24-17m-38 21q29-13 38 0l22-13m-43 18q31-7 48 5l18-10"/>
+        <path d="m148 106q-24 2-24 22l-25 8m67-24q-18 8-13 27l-26 10m171-24q22 4 18 19l30 8m-62-21q17 10 8 25l25 13"/>
+      </g>
+      <g fill="none" stroke="#d7e0d8" stroke-width=".7" opacity=".55"><path d="m177 99 48 8 24-12m-63 30 48 8 25-13m-82-2 21-10m-9 26 20-10m-6-14 21-11m8 39 24-13"/></g>
+      <g fill="#c5a875" stroke="#8b724e" stroke-width=".7"><circle cx="90" cy="116" r="3"/><circle cx="109" cy="106" r="3"/><circle cx="128" cy="96" r="3"/><circle cx="347" cy="147" r="3"/><circle cx="369" cy="136" r="3"/><circle cx="391" cy="125" r="3"/></g>
+    </svg>
+  </div>
+</section>

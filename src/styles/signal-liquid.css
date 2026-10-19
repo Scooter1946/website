@@ -1,0 +1,124 @@
+.liquid-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #f3f4f2;
+}
+.liquid-canvas,
+.liquid-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.liquid-canvas {
+  opacity: 0;
+  filter: blur(3px);
+  transform: scale(1.04);
+}
+.liquid-backdrop[data-ready="true"] .liquid-canvas {
+  opacity: 0.88;
+}
+.liquid-fallback {
+  opacity: 0.45;
+}
+.liquid-backdrop[data-ready="true"] .liquid-fallback {
+  visibility: hidden;
+}
+.liquid-backdrop[data-mode="satin"] .liquid-canvas {
+  filter: none;
+  opacity: 1;
+}
+.liquid-backdrop[data-mode="satin"] {
+  background: linear-gradient(
+    115deg,
+    #edf1ee 20%,
+    #c3d1cb 45%,
+    #f8f7ef 49%,
+    #d9e0dc 60%,
+    #eef0ec 85%
+  );
+}
+.liquid-backdrop[data-mode="satin"] .liquid-fallback {
+  visibility: hidden;
+}
+.liquid-backdrop:is(
+  [data-mode="blobs"],
+  [data-mode="pools"],
+  [data-mode="jelly"]
+) {
+  background: #f9faf6;
+}
+.liquid-backdrop:is(
+    [data-mode="blobs"],
+    [data-mode="pools"],
+    [data-mode="jelly"]
+  )
+  .liquid-canvas {
+  filter: none;
+  transform: none;
+}
+.liquid-backdrop[data-ready="true"]:is(
+    [data-mode="blobs"],
+    [data-mode="pools"],
+    [data-mode="jelly"]
+  )
+  .liquid-canvas {
+  opacity: 1;
+}
+.background-study {
+  position: fixed;
+  bottom: 18px;
+  right: 22px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  background: #f5f6f2ed;
+  border: 1px solid #596d6030;
+  box-shadow: 0 4px 20px #304b3810;
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  font-size: 11px;
+}
+.background-study > span {
+  padding: 0 10px;
+  color: #526267;
+}
+.background-study button {
+  border: 0;
+  background: transparent;
+  border-radius: 9px;
+  min-height: 44px;
+  padding: 0 13px;
+  font-size: 12px;
+}
+.background-study button[aria-pressed="true"] {
+  background: #dce6df;
+  color: #253b32;
+}
+.background-study button:hover {
+  background: #e4eae4;
+}
+/* Reserve a small exit margin for the draft switcher so contact links stay reachable. */
+body:has(.background-study) footer {
+  padding-bottom: 100px;
+}
+@media (max-width: 760px) {
+  .background-study {
+    bottom: 10px;
+    right: 12px;
+    max-width: calc(100vw - 24px);
+    gap: 0;
+  }
+  .background-study button {
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+  .background-study > span {
+    display: none;
+  }
+}

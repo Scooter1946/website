@@ -22,6 +22,23 @@ export interface Stat {
   href?: string; // optional link to a verifiable source
 }
 
+export const siftProject: Project = {
+  title: "Sift",
+  badge: "4th · HackMIT",
+  outcome:
+    "A reimbursement reconciliation agent that checks receipts against claims and event policies, bringing uncertain cases to a human reviewer. Fourth place at HackMIT.",
+  tags: ["Next.js", "Supabase", "AI agents"],
+  href: "https://plume.hackmit.org/project/rbdjt-lrlzh-wcsop-znsvr",
+};
+
+export const riscvProject = {
+  title: "RISC-V CPU",
+  status: "In progress",
+  description:
+    "A single-cycle RISC-V CPU. Each instruction runs in one clock cycle, from fetching the instruction to writing back the result.",
+  // The owner has not supplied a ready-to-share repository for this project.
+};
+
 export const site = {
   name: "Justin Chen",
   // Status pill text (paired with the pulsing availability dot).
@@ -29,6 +46,11 @@ export const site = {
   location: "West Lafayette, IN",
   education: "B.S. + M.S. Electrical Engineering, Purdue · Math + CS minor",
   gradYear: "B.S. expected May 2028",
+  // Qualification supplied by the portfolio owner; no year or score specified.
+  mathRecognition: {
+    title: "AIME qualifier",
+    description: "American Invitational Mathematics Examination",
+  },
   // One-line essence, used in the hero + meta description.
   tagline:
     "I build top to bottom — from a React app someone actually enjoys down to SystemVerilog on an FPGA.",
@@ -59,7 +81,11 @@ export const site = {
     "Arduino",
   ],
   stats: [
-    { value: "Top 2%", label: "LeetCode, global", href: "https://leetcode.com/u/Scooter1946/" },
+    {
+      value: "Top 2%",
+      label: "LeetCode, global",
+      href: "https://leetcode.com/u/Scooter1946/",
+    },
     { value: "1600+", label: "Codeforces — Expert" }, // TODO(user): add Codeforces profile URL
     { value: "3.8", label: "GPA · Purdue EE (B.S./M.S.)" },
     {
@@ -71,9 +97,13 @@ export const site = {
   email: "tulare789@gmail.com",
   links: [
     { label: "GitHub", href: "https://github.com/Scooter1946" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/justin-chen-a60a8a283/" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/justin-chen-a60a8a283/",
+    },
   ],
-  aboutQuote: "My favorite projects are the ones where code meets physical hardware.",
+  aboutQuote:
+    "My favorite projects are the ones where code meets physical hardware.",
   about:
     "My path started in competitive programming and quickly spilled over into physical hardware. Whether it is building a smart beehive monitor, assembling a 3-DOF robotic arm, or hand-wiring the macropad up top, I go wherever the interesting problems are. I shift between code and circuits because I get bored doing just one, and I will take a complex, messy challenge over a perfect resume line any day.",
   experience: [
@@ -109,7 +139,8 @@ export const site = {
   // Order matters for the bento grid (6 columns): [0] is the featured flagship
   // and spans 4 columns; every other card spans 2. The grid stays gap-free when
   // the number of standard (non-flagship) tiles is 1, 4, 7, … (≡ 1 mod 3).
-  // Currently 7 standard tiles + the flagship = 8 cards = 3 full rows.
+  // Archived design studies use these stable positions; append new projects.
+  inProgressProjects: [riscvProject],
   projects: [
     {
       title: "Remote beehive health monitor",
@@ -135,7 +166,7 @@ export const site = {
       outcome:
         "A price-time-priority matching engine in C++ with automated market-making bots — quote two-sided markets and manage inventory risk inside a simulated exchange.",
       tags: ["C++", "Low-latency", "Trading"],
-      href: "https://github.com/Scooter1946", // TODO(user): dedicated repo/demo
+      href: "https://github.com/Scooter1946/Order-Book-Sim",
     },
     {
       title: "Maze algorithm visualizer",
@@ -158,7 +189,7 @@ export const site = {
       outcome:
         "Hand-derived forward kinematics and transformation matrices driving a 3-DOF arm, with distance-based error minimization for smooth, continuous motion paths.",
       tags: ["Robotics", "Kinematics", "Control"],
-      href: "https://github.com/Scooter1946", // TODO(user): dedicated repo/demo
+      href: "https://github.com/Scooter1946/roboArm",
     },
     {
       title: "Macropad",
@@ -176,11 +207,24 @@ export const site = {
       tags: ["Astro", "TypeScript", "CSS"],
       href: "https://github.com/Scooter1946/website",
     },
+    siftProject,
   ] as Project[],
   skills: [
-    { group: "Languages", items: ["Java", "Python", "TypeScript", "C/C++", "Dart"] },
-    { group: "Web & cloud", items: ["React", "Node.js", "REST APIs", "Firebase"] },
-    { group: "Tools", items: ["Git", "Docker", "PyTorch", "OpenCV", "Flutter"] },
-    { group: "Hardware", items: ["SystemVerilog", "FPGAs", "RP2040 / Arduino"] },
+    {
+      group: "Languages",
+      items: ["Java", "Python", "TypeScript", "C/C++", "Dart"],
+    },
+    {
+      group: "Web & cloud",
+      items: ["React", "Node.js", "REST APIs", "Firebase"],
+    },
+    {
+      group: "Tools",
+      items: ["Git", "Docker", "PyTorch", "OpenCV", "Flutter"],
+    },
+    {
+      group: "Hardware",
+      items: ["SystemVerilog", "FPGAs", "RP2040 / Arduino"],
+    },
   ],
 };

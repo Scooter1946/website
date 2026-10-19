@@ -1,0 +1,71 @@
+.signal-cpu {
+  --cpu-ink: #263a34;
+  --cpu-muted: #66756d;
+  width: 100%;
+  margin-block: 10px 8px;
+  color: var(--cpu-ink);
+}
+
+.signal-cpu-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 26px;
+  color: var(--cpu-muted);
+  font-size: 12px;
+  letter-spacing: 0.035em;
+}
+
+.signal-cpu-phase {
+  color: #476356;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-cpu-stage {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  isolation: isolate;
+  background: transparent;
+}
+
+.signal-cpu-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.signal-cpu-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.signal-cpu-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.signal-cpu-canvas.has-webgl + .signal-cpu-fallback {
+  visibility: hidden;
+}
+
+@media (max-width: 760px) {
+  .signal-cpu-stage {
+    height: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-cpu *,
+  .signal-cpu *::before,
+  .signal-cpu *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,11 @@
+---
+import '../../styles/signal-liquid.css';
+---
+<div class="liquid-backdrop" data-backdrop data-still="true" aria-hidden="true">
+  <svg class="liquid-fallback" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="none">
+    <defs><radialGradient id="liquid-wash"><stop stop-color="#bdcec4" stop-opacity=".4"/><stop offset="1" stop-color="#e4eae5" stop-opacity=".1"/></radialGradient></defs>
+    <path d="M-100-100H1550V320C1200 160 1270 610 920 530S660 120 450 270 650 720 340 790-80 590-100 1100Z" fill="url(#liquid-wash)"/>
+    <path d="M-100 720C170 460 330 1080 630 780S620 430 930 470 1100 780 1550 520V1100H-100Z" fill="#d8e2df" opacity=".4"/>
+  </svg>
+  <canvas class="liquid-canvas" data-liquid-canvas></canvas>
+</div>

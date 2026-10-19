@@ -1,0 +1,278 @@
+/* Three typography studies share the original Pigment canvas and project demos. */
+html[data-type] {
+  /* Roles stay consistent across section, project, and body text. */
+  --type-section: clamp(34px, 3.8vw, 48px);
+  --type-project: 32px;
+  --type-card-title: 24px;
+  --type-body: 18px;
+  --type-accent: #953d23;
+  --type-soft: #f9e7dc;
+  --type-display: "Space Grotesk Variable", sans-serif;
+  --ink: #233335;
+  --muted: #445457;
+}
+html[data-type="ink"] {
+  --type-accent: #236460;
+  --type-soft: #e2eeea;
+  --type-display: "Manrope Variable", sans-serif;
+}
+html[data-type="highlight"] {
+  --type-accent: #634828;
+  --type-soft: #f3e3b9;
+  --type-display: "Space Grotesk Variable", sans-serif;
+}
+[data-type] :is(h1, h2, h3, .intro-lead, .email-link) {
+  font-family: var(--type-display);
+  font-weight: 650;
+}
+[data-type] h1 {
+  letter-spacing: -0.065em;
+}
+[data-type] .intro-lead {
+  font-size: clamp(28px, 2.9vw, 42px);
+  line-height: 1.24;
+  letter-spacing: -0.04em;
+}
+[data-type] :is(.intro-description, .sift-summary, .about p) {
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+[data-type] .intro-description {
+  max-width: 39ch;
+}
+[data-type] .reading-emphasis {
+  color: var(--type-accent);
+  font-weight: 700;
+}
+[data-type] h2 {
+  font-size: var(--type-section);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+[data-type] h3 {
+  font-size: var(--type-project);
+  font-weight: 700;
+}
+[data-type] .project-description {
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: 1.6;
+}
+[data-type] .section-heading > p {
+  font-size: 15px;
+}
+[data-type] :is(.project-area, .project-award, .project-bottom) {
+  font-size: 14px;
+}
+[data-type] .project-award {
+  color: var(--type-accent);
+  font-weight: 750;
+}
+[data-type] .project-top {
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+[data-type] :is(.text-link, .project-bottom a) {
+  color: var(--type-accent);
+  font-weight: 750;
+  font-size: 16px;
+}
+[data-type] .project-index {
+  gap: 14px;
+}
+[data-type] .project-index li {
+  border: 0;
+  min-width: 0;
+}
+[data-type] .project-index a {
+  height: 100%;
+  min-height: 116px;
+  padding: 22px 24px;
+  background: #fffcf8c9;
+  border: 1px solid #53696824;
+  border-radius: 22px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+[data-type] .index-title {
+  font-size: 19px;
+  line-height: 1.3;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+[data-type] .index-description {
+  font-size: 15px;
+  line-height: 1.5;
+}
+[data-type] .index-copy {
+  gap: 8px;
+}
+[data-type] .index-arrow {
+  color: var(--type-accent);
+  flex-shrink: 0;
+  font-size: 22px;
+}
+[data-type] .project-index a:hover {
+  background: #fffdf9;
+  border-color: var(--type-accent);
+  transform: translateY(-2px);
+}
+[data-type] .about h2 {
+  font-size: var(--type-section);
+}
+[data-type] .about dl {
+  font-size: 15px;
+}
+[data-type] .about dt {
+  color: var(--ink);
+  font-size: 16px;
+}
+[data-type] .email-link {
+  font-size: 48px;
+}
+[data-type] :is(footer p, .social-links, .intro-location) {
+  font-size: 14px;
+}
+[data-type] .social-links {
+  flex-wrap: wrap;
+}
+[data-type="ink"] :is(h1, h2, h3, .intro-lead) {
+  font-weight: 800;
+}
+[data-type="ink"] .reading-emphasis {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: #3e8277;
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.14em;
+}
+[data-type="ink"] .project-index a {
+  border-radius: 12px;
+  background: #f7faf5a8;
+  border-color: #416c6350;
+  padding-left: 26px;
+  border-left: 4px solid #477e73;
+}
+[data-type="ink"] .index-title {
+  font-size: 20px;
+}
+[data-type="highlight"] .reading-emphasis {
+  color: var(--ink);
+  background: var(--type-soft);
+  box-shadow:
+    0.1em 0 var(--type-soft),
+    -0.1em 0 var(--type-soft);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  border-radius: 0.12em;
+}
+[data-type="highlight"] .project-award {
+  background: var(--type-soft);
+  border-radius: 20px;
+  padding: 6px 12px;
+}
+[data-type="highlight"] .project-index a {
+  border-radius: 34px;
+  background: #fffaf0d9;
+  border-color: #94775026;
+}
+[data-type="highlight"] .index-arrow {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--type-soft);
+}
+.type-study {
+  position: fixed;
+  bottom: 18px;
+  right: 22px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  background: #f9faf6f5;
+  border: 1px solid #596d6030;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px #304b3810;
+}
+.type-study > span {
+  padding: 0 10px;
+  font-size: 12px;
+  color: #445457;
+}
+.type-study button {
+  border: 0;
+  background: transparent;
+  border-radius: 9px;
+  min-height: 44px;
+  padding: 0 13px;
+  font-size: 12px;
+}
+.type-study button[aria-pressed="true"] {
+  background: var(--type-soft);
+  color: var(--type-accent);
+  font-weight: 750;
+}
+.type-study button:hover {
+  background: #e8ece5;
+}
+body:has(.type-study) footer {
+  padding-bottom: 110px;
+}
+@media (max-width: 760px) {
+  html[data-type] {
+    --type-section: 34px;
+    --type-project: 28px;
+    --type-card-title: 22px;
+    --type-body: 17px;
+  }
+  [data-type] .intro h1 {
+    font-size: clamp(57px, 12vw, 86px);
+  }
+  [data-type] .intro-lead {
+    font-size: 30px;
+  }
+  [data-type] :is(.intro-description, .sift-summary, .about p) {
+    font-size: var(--type-body);
+  }
+  [data-type] h3 {
+    font-size: var(--type-project);
+  }
+  [data-type] :is(h2, .about h2) {
+    font-size: var(--type-section);
+  }
+  [data-type] .project-description {
+    font-size: var(--type-body);
+  }
+  [data-type] .project-index a {
+    min-height: 110px;
+    padding: 20px;
+  }
+  [data-type] .index-title {
+    font-size: 18px;
+  }
+  [data-type] .about dl {
+    font-size: 14px;
+  }
+  .type-study {
+    right: 12px;
+    bottom: 10px;
+    max-width: calc(100vw - 24px);
+  }
+  .type-study > span {
+    display: none;
+  }
+  .type-study button {
+    padding-inline: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-type] .project-index a {
+    transition: none;
+  }
+}

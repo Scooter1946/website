@@ -1,0 +1,51 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/space-grotesk';
+import '../styles/signal-type-studies.css';
+import { site, siftProject, riscvProject } from '../data/site';
+import '../styles/signal.css';
+import LiquidBackdrop from './drafts/LiquidBackdrop.astro';
+import CpuDemo from './drafts/CpuDemo.astro';
+import SiftDemo from './drafts/SiftDemo.astro';
+import MoreProjects from './drafts/MoreProjects.astro';
+interface Props { preview?: boolean; }
+const { preview = false } = Astro.props;
+const keys = Array.from({length:25}, (_,i)=>({x:26+(i%5)*29,y:24+Math.floor(i/5)*29}));
+
+---
+<!doctype html>
+<html lang="en" data-type="copper" data-project-layout="cards">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#f3f4f2" />{preview && <meta name="robots" content="noindex, nofollow" />}<link rel="icon" href="/favicon.svg" type="image/svg+xml" /><meta property="og:title" content="Justin Chen — Electrical engineering at Purdue" /><meta property="og:description" content="Software and hardware projects, including Sift, a single-cycle RISC-V CPU, and an RP2040 macropad." /><meta property="og:type" content="website" /><meta name="description" content="Justin Chen, an electrical engineering student at Purdue. Software and hardware projects." /><title>Justin Chen — Software &amp; hardware</title></head>
+<body id="top">
+<LiquidBackdrop />
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><a class="identity" href="#top">Justin Chen</a><nav aria-label="Main navigation"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav></header>
+<main id="main" tabindex="-1">
+<section class="intro" aria-labelledby="intro-title">
+<div class="intro-copy"><h1 id="intro-title">Justin Chen.</h1><p class="intro-lead">Electrical engineering<br />at <strong class="reading-emphasis">Purdue.</strong></p><a class="text-link" href="#work">See my projects <span aria-hidden="true">↓</span></a></div>
+<aside class="desk-piece" aria-label="A small hardware project">
+<div class="pad-toggle" data-pad-assembly>
+<span class="pad-visual"><span class="pad-scene" data-pad-scene aria-hidden="true"></span><svg viewBox="0 0 300 260" aria-hidden="true" fill="none"><ellipse cx="150" cy="222" rx="90" ry="15" fill="#63766d" opacity=".09"/><g transform="translate(150 125) scale(.8 .48) rotate(45) translate(-95 -95)">
+<g class="pad-base"><rect x="-8" y="12" width="204" height="204" rx="18" fill="#9baaa5"/><rect x="-8" y="0" width="204" height="204" rx="18" fill="#d6dfda" stroke="#82938b" stroke-width="2"/><rect x="3" y="11" width="182" height="182" rx="12" fill="#65776f"/><rect x="71" y="201" width="50" height="8" rx="3" fill="#4c5f57"/></g>
+<g class="pad-board"><rect x="3" y="9" width="182" height="182" rx="12" fill="#a0b8aa" stroke="#678273" stroke-width="2"/><path d="M30 40h60v100h65M40 155V90h105M120 30v70h40" stroke="#e0cbaa" stroke-width="3"/><rect x="77" y="77" width="32" height="32" rx="3" fill="#354b41"/></g>
+<g class="pad-lid"><rect x="-8" y="-2" width="204" height="204" rx="18" fill="#edf0eb" stroke="#91a096" stroke-width="2"/>{keys.map((key,i)=><g><rect x={key.x-10} y={key.y-8} width="24" height="27" rx="5" fill="#6a7f75"/><rect x={key.x-10} y={key.y-11} width="24" height="24" rx="5" fill={i===4||i===20?'#c2d3c5':'#8fa69a'} stroke="#748d80"/><path d={`M${key.x-5} ${key.y-7}h14`} stroke="#d9e3dc" stroke-opacity=".65"/></g>)}</g></g></svg></span>
+</div><p id="pad-caption">My RP2040 macropad.</p><p class="pad-scroll-note" data-pad-note>Scroll to assemble</p></aside>
+
+</section>
+<section class="work" id="work" aria-labelledby="work-title"><div class="section-heading"><h2 id="work-title">Selected projects</h2></div><div class="project-grid">
+<article class="project" id="sift"><div class="project-top"><span class="project-award">4th place · HackMIT</span></div><h3>Sift</h3><SiftDemo /><p class="project-description">Checks <span class="reading-emphasis">reimbursement claims.</span></p><p class="sift-summary">Sift compares receipts with claims and event rules, then flags mismatches for review.</p><div class="project-bottom"><span>Next.js · Supabase</span><a href={siftProject.href}>View project <span aria-hidden="true">↗</span></a></div></article>
+<article class="project" id="riscv"><div class="project-top"><span class="project-award">{riscvProject.status}</span></div><h3>{riscvProject.title}</h3><CpuDemo /><p class="project-description">A <span class="reading-emphasis">single-cycle RISC-V CPU.</span></p><p class="sift-summary">Each instruction runs in one clock cycle, from fetching the instruction to writing back the result.</p><div class="project-bottom"><span>RISC-V · CPU design</span></div></article>
+</div>
+</section>
+<MoreProjects />
+<section class="about" id="about" aria-labelledby="about-title"><div><h2 id="about-title">About me</h2><p>I started with <strong>competitive programming and math competitions</strong>. These days, I also build embedded systems and write software.</p></div><dl><div><dt>Education</dt><dd>B.S. + M.S. Electrical Engineering<br />Math + CS minor<br />B.S. expected May 2028</dd></div><div><dt>Experience</dt><dd>Backend tooling at Vivalink.<br />FPGA simulation with Boiler Quant.</dd></div></dl>
+<section class="about-accolades" aria-labelledby="accolades-title">
+  <h3 id="accolades-title">Competitive programming &amp; math</h3>
+  <ul class="accolades-list">
+    <li data-accolade><strong>{site.mathRecognition.title}</strong><span>{site.mathRecognition.description}</span></li>
+    {site.stats.filter(stat => /Codeforces|LeetCode/.test(stat.label)).map(stat => <li data-accolade>{stat.href ? <a href={stat.href}><strong>{stat.value}</strong><span>{stat.label}<span aria-hidden="true"> ↗</span></span></a> : <><strong>{stat.value}</strong><span>{stat.label}</span></>}</li>)}
+  </ul>
+</section></section>
+<footer id="contact"><div><p>Contact</p><a class="email-link" href={`mailto:${site.email}`}>Email me<span aria-hidden="true">↗</span></a></div><div class="social-links">{site.links.map(link=><a href={link.href}>{link.label}<span aria-hidden="true">↗</span></a>)}<a href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
+</main><script>import '../scripts/signal'; import '../scripts/signal-project-cards';</script></body></html>

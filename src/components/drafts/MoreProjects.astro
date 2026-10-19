@@ -1,0 +1,22 @@
+---
+import { moreProjects } from '../../data/signal-more-projects';
+import '../../styles/signal-more-projects.css';
+---
+<section class="more-work" id="more-projects" aria-labelledby="more-work-title">
+  <div class="section-heading"><h2 id="more-work-title">More projects</h2></div>
+  <div class="project-collection">
+    {moreProjects.map(project => <article class="archive-item" data-project-card>
+      <a class="archive-project" href={project.href} aria-label={`${project.linkLabel}: ${project.title}`}>
+      <header class="archive-heading"><h3>{project.title}</h3>{project.status && <p class="archive-status">{project.status}</p>}</header>
+      <div class="archive-body">
+        <p class="archive-description">{project.description}</p>
+        <ul class="archive-stack" aria-label={`${project.title} technologies`}>{project.stack.map(tech => <li>{tech}</li>)}</ul>
+        <div class="archive-notes">
+          <div class="archive-detail"><p>{project.detail}</p></div>
+        </div>
+      </div>
+      <span class="archive-link">{project.linkLabel}<span aria-hidden="true">↗</span></span>
+      </a>
+    </article>)}
+  </div>
+</section>
