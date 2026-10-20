@@ -611,16 +611,77 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
       y: 0.64,
     },
   ];
+  // Cache local bounds once; framing a rotated part never traverses every mesh.
+  const partCorners = labelSpecs.map(({ group }) => {
+    const box = new THREE.Box3().setFromObject(group);
+    box.translate(group.position.clone().negate());
+    return [box.min.x, box.max.x].flatMap((x) =>
+      [box.min.y, box.max.y].flatMap((y) =>
+        [box.min.z, box.max.z].map((z) => new THREE.Vector3(x, y, z)),
+      ),
+    );
+  });
+  const events = new AbortController();
+  const eventOptions = { signal: events.signal };
+  const piece = host.closest<HTMLElement>(".desk-piece");
+  const note = piece?.querySelector<HTMLElement>("[data-pad-note]");
+  const caption = piece?.querySelector<HTMLElement>("#pad-caption");
+  const originalCaption = caption?.textContent || "";
+  const surface = document.createElement("span");
+  surface.className = "pad-rotate-surface";
+  surface.tabIndex = 0;
+  surface.setAttribute("role", "group");
+  surface.setAttribute(
+    "aria-label",
+    "Rotate macropad. Drag or use the arrow keys. Press Escape to reset.",
+  );
+  host.append(surface);
+  const controls = document.createElement("div");
+  controls.className = "pad-inspector-controls";
+  controls.setAttribute("role", "group");
+  controls.setAttribute("aria-label", "Macropad view");
+  piece?.insertBefore(controls, caption || null);
+  const resetButton = document.createElement("button");
+  resetButton.type = "button";
+  resetButton.className = "pad-reset";
+  resetButton.textContent = "Reset view";
+  resetButton.addEventListener("click", () => reset(), eventOptions);
+  for (const [name, glyph, dx, dy] of [
+    ["Rotate left", "←", -0.28, 0],
+    ["Rotate right", "→", 0.28, 0],
+    ["Rotate up", "↑", 0, -0.28],
+    ["Rotate down", "↓", 0, 0.28],
+  ] as const) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "pad-turn";
+    button.textContent = glyph;
+    button.setAttribute("aria-label", name);
+    button.addEventListener("click", () => rotate(dx, dy), eventOptions);
+    controls.append(button);
+  }
+  controls.append(resetButton);
+  if (caption) caption.setAttribute("aria-live", "polite");
   const leaders = labelSpecs.map((spec) => {
     const group = document.createElementNS(svgNS, "g");
     const line = document.createElementNS(svgNS, "path");
     const dot = document.createElementNS(svgNS, "circle");
-    const text = document.createElementNS(svgNS, "text");
-    text.textContent = spec.name;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "pad-part-label";
+    button.textContent = spec.name;
+    button.setAttribute("aria-label", `Inspect ${spec.name}`);
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener(
+      "click",
+      () => selectPart(labelSpecs.indexOf(spec)),
+      eventOptions,
+    );
     dot.setAttribute("r", "1.8");
-    group.append(line, dot, text);
+    group.append(line, dot);
     labels.append(group);
-    return { ...spec, line, dot, text, group };
+    host.append(button);
+    return { ...spec, line, dot, button, group };
   });
   host.append(labels);
 
@@ -629,20 +690,131 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
   const cameraUp = new THREE.Vector3();
   const center = new THREE.Vector3();
   const offset = new THREE.Vector3();
+  const displayedOffset = new THREE.Vector3();
+  const userRotation = new THREE.Quaternion();
+  const deltaRotation = new THREE.Quaternion();
+  const baseRotation = new THREE.Quaternion();
+  const baseEuler = new THREE.Euler();
+  const projectedCorner = new THREE.Vector3();
+  const startRotation = new THREE.Quaternion();
+  const startOffset = new THREE.Vector3();
   const cached = { progress: 0, pointerX: 0, pointerY: 0, reduced: false };
+  let focused: number | null = null;
+  let rotated = false;
+  let transitionStart: number | null = null;
+  let startHeight = 7.2;
+  let transitionFrame = 0;
+  let drag: { id: number; x: number; y: number; touch: boolean } | null = null;
   let viewHeight = 7.2;
+  const beginTransition = () => {
+    startHeight = viewHeight;
+    startOffset.copy(root.position);
+    startRotation.copy(root.quaternion);
+    transitionStart = cached.reduced ? null : performance.now();
+  };
+  const selectPart = (index: number) => {
+    beginTransition();
+    focused = focused === index ? null : index;
+    // Restore the full assembly at its fitted size before showing its layers.
+    if (focused === null) transitionStart = null;
+    host.dataset.part = focused === null ? "all" : labelSpecs[focused]!.name;
+    if (caption)
+      caption.textContent =
+        focused === null ? originalCaption : labelSpecs[focused]!.name;
+    render(cached);
+  };
+  const reset = () => {
+    transitionStart = null;
+    focused = null;
+    rotated = false;
+    userRotation.identity();
+    host.dataset.part = "all";
+    if (caption) caption.textContent = originalCaption;
+    render(cached);
+  };
+  const rotate = (dx: number, dy: number) => {
+    // Screen-space quaternion rotation has no yaw/pitch clamp or pole lock.
+    rotated = true;
+    deltaRotation.setFromAxisAngle(cameraUp, dx);
+    userRotation.premultiply(deltaRotation);
+    deltaRotation.setFromAxisAngle(cameraRight, dy);
+    userRotation.premultiply(deltaRotation).normalize();
+    render(cached);
+  };
+  const endDrag = () => {
+    const id = drag?.id;
+    drag = null;
+    host.classList.remove("pad-dragging");
+    if (id !== undefined && surface.hasPointerCapture(id))
+      surface.releasePointerCapture(id);
+  };
+  surface.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (!event.isPrimary || event.button !== 0) return;
+      drag = {
+        id: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+        touch: event.pointerType === "touch",
+      };
+      surface.setPointerCapture(event.pointerId);
+      host.classList.add("pad-dragging");
+      if (event.pointerType === "mouse") {
+        event.preventDefault();
+        surface.focus({ preventScroll: true });
+      }
+    },
+    eventOptions,
+  );
+  surface.addEventListener(
+    "pointermove",
+    (event) => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const scale = (Math.PI * 2) / Math.max(240, viewport.x - 90);
+      const dx = (event.clientX - drag.x) * scale;
+      const dy = drag.touch ? 0 : (event.clientY - drag.y) * scale;
+      drag.x = event.clientX;
+      drag.y = event.clientY;
+      rotate(dx, dy);
+    },
+    eventOptions,
+  );
+  for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
+    surface.addEventListener(event, endDrag, eventOptions);
+  surface.addEventListener(
+    "keydown",
+    (event) => {
+      const steps: Record<string, [number, number]> = {
+        ArrowLeft: [-0.2, 0],
+        ArrowRight: [0.2, 0],
+        ArrowUp: [0, -0.2],
+        ArrowDown: [0, 0.2],
+      };
+      const step = steps[event.key];
+      if (!step) return;
+      event.preventDefault();
+      rotate(...step);
+    },
+    eventOptions,
+  );
+  piece?.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        reset();
+      }
+    },
+    eventOptions,
+  );
   const render = (state: typeof cached) => {
     if (disposed) return;
     const progress = THREE.MathUtils.clamp(state.progress, 0, 1);
-    const spread = state.reduced ? 1 : smooth(progress);
+    const spread = state.reduced || focused !== null ? 1 : smooth(progress);
     const mobile = viewport.x <= 420;
-    viewHeight = mobile ? mix(7.5, 9.2, spread) : mix(6.9, 8.8, spread);
+    let targetHeight = mobile ? mix(7.5, 9.2, spread) : mix(6.9, 8.8, spread);
     const aspect = viewport.x / Math.max(1, viewport.y);
-    camera.left = (-viewHeight * aspect) / 2;
-    camera.right = (viewHeight * aspect) / 2;
-    camera.top = viewHeight / 2;
-    camera.bottom = -viewHeight / 2;
-    camera.updateProjectionMatrix();
 
     enclosure.position.set(-0.28 * spread, -0.5 * spread, 0.05 * spread);
     bezel.position.set(-0.43 * spread, 1.25 * spread, -0.25 * spread);
@@ -660,13 +832,39 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
     // remain inspectable once the key matrix and case separate.
     controller.position.set(2.45 * spread, 0.14 - 0.55 * spread, 4.1 * spread);
 
-    root.rotation.y = state.reduced
-      ? 0
-      : state.pointerX * 0.07 + Math.sin(progress * Math.PI) * 0.025;
-    root.rotation.x = 0.07 + (state.reduced ? 0 : state.pointerY * 0.045);
-    root.rotation.z = state.reduced ? 0 : -state.pointerX * 0.012;
-    const camX = state.reduced ? 7.8 : 7.8 + state.pointerX * 0.22;
-    const camY = state.reduced ? 8.1 : 8.1 - state.pointerY * 0.18;
+    baseEuler.y =
+      state.reduced || rotated || focused !== null
+        ? 0
+        : state.pointerX * 0.07 + Math.sin(progress * Math.PI) * 0.025;
+    baseEuler.x =
+      0.07 +
+      (state.reduced || rotated || focused !== null
+        ? 0
+        : state.pointerY * 0.045);
+    baseEuler.z =
+      state.reduced || rotated || focused !== null
+        ? 0
+        : -state.pointerX * 0.012;
+    baseRotation.setFromEuler(baseEuler);
+    root.quaternion.copy(baseRotation).premultiply(userRotation);
+    const transition =
+      transitionStart === null || state.reduced
+        ? 1
+        : smooth((performance.now() - transitionStart) / 420);
+    if (transition < 1)
+      root.quaternion.slerpQuaternions(
+        startRotation,
+        root.quaternion.clone(),
+        transition,
+      );
+    const camX =
+      state.reduced || rotated || focused !== null
+        ? 7.8
+        : 7.8 + state.pointerX * 0.22;
+    const camY =
+      state.reduced || rotated || focused !== null
+        ? 8.1
+        : 8.1 - state.pointerY * 0.18;
     camera.position.set(camX, camY, 12.2);
     camera.lookAt(0, 0.04, 0);
     camera.updateMatrixWorld();
@@ -679,6 +877,54 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
       .addScaledVector(cameraUp, -center.dot(cameraUp));
     root.position.copy(offset);
     root.position.addScaledVector(cameraRight, -0.68 * spread);
+    // Focus is a true isolated part. Also hide the two loose harness meshes.
+    root.children.forEach((child) => {
+      child.visible = focused === null || child === labelSpecs[focused]!.group;
+    });
+    if (focused !== null || rotated) {
+      root.position.set(0, 0, 0);
+      root.updateMatrixWorld(true);
+      let minX = Infinity,
+        maxX = -Infinity,
+        minY = Infinity,
+        maxY = -Infinity;
+      labelSpecs.forEach((part, index) => {
+        if (focused !== null && focused !== index) return;
+        partCorners[index]!.forEach((corner) => {
+          projectedCorner.copy(corner).applyMatrix4(part.group.matrixWorld);
+          const x = projectedCorner.dot(cameraRight);
+          const y = projectedCorner.dot(cameraUp);
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        });
+      });
+      const availableWidth = Math.max(100, viewport.x - 112);
+      const fitted =
+        Math.max(
+          (maxY - minY) / 0.8,
+          ((maxX - minX) * viewport.y) / availableWidth,
+        ) * 1.12;
+      targetHeight = focused === null ? Math.max(targetHeight, fitted) : fitted;
+      root.position
+        .copy(cameraRight)
+        .multiplyScalar(-(minX + maxX) / 2 - (44 * targetHeight) / viewport.y)
+        .addScaledVector(cameraUp, -(minY + maxY) / 2 + 0.04);
+    }
+    displayedOffset.copy(root.position);
+    if (transition < 1) {
+      root.position.lerpVectors(startOffset, displayedOffset, transition);
+      viewHeight = mix(startHeight, targetHeight, transition);
+    } else {
+      viewHeight = targetHeight;
+      transitionStart = null;
+    }
+    camera.left = (-viewHeight * aspect) / 2;
+    camera.right = (viewHeight * aspect) / 2;
+    camera.top = viewHeight / 2;
+    camera.bottom = -viewHeight / 2;
+    camera.updateProjectionMatrix();
     renderer.render(scene, camera);
     labels.setAttribute("viewBox", `0 0 ${viewport.x} ${viewport.y}`);
     leaders.forEach((leader, index) => {
@@ -688,20 +934,33 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
       anchor.project(camera);
       const x = ((anchor.x + 1) * viewport.x) / 2;
       const y = ((1 - anchor.y) * viewport.y) / 2;
-      const textX = viewport.x - (mobile ? 69 : 76);
-      const textY = viewport.y * leader.y;
+      const textX = viewport.x - 82;
+      // 44px hit areas remain separate even on a narrow phone viewport.
+      const row = [0, 1, 2, 3, 5, 4][index]!;
+      const textY = 22 + row * Math.max(44, (viewport.y - 44) / 6);
       leader.line.setAttribute(
         "d",
         `M${x},${y} L${textX - 12},${textY} H${textX - 5}`,
       );
       leader.dot.setAttribute("cx", String(x));
       leader.dot.setAttribute("cy", String(y));
-      leader.text.setAttribute("x", String(textX));
-      leader.text.setAttribute("y", String(textY + 3));
-      leader.group.style.opacity = String(
-        smooth((progress - 0.25 - index * 0.055) / 0.32),
-      );
+      leader.button.style.top = `${textY - 22}px`;
+      leader.button.setAttribute("aria-pressed", String(focused === index));
+      leader.group.style.opacity =
+        focused === null
+          ? String(smooth((progress - 0.25 - index * 0.055) / 0.32))
+          : "0";
     });
+    if (note)
+      note.textContent =
+        focused === null
+          ? "Drag to rotate · Select a layer"
+          : "Drag to rotate · Reset view to return";
+    if (transition < 1 && !transitionFrame && !document.hidden)
+      transitionFrame = requestAnimationFrame(() => {
+        transitionFrame = 0;
+        render(cached);
+      });
   };
 
   const resize = () => {
@@ -719,11 +978,16 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
 
   const onContextLost = (event: Event) => {
     event.preventDefault();
+    endDrag();
+    cancelAnimationFrame(transitionFrame);
+    transitionFrame = 0;
     host.classList.remove("macropad-scene-ready");
+    controls.hidden = true;
   };
   const onContextRestored = () => {
     if (!disposed) {
       host.classList.add("macropad-scene-ready");
+      controls.hidden = false;
       render(cached);
     }
   };
@@ -743,6 +1007,9 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
     dispose() {
       if (disposed) return;
       disposed = true;
+      events.abort();
+      endDrag();
+      cancelAnimationFrame(transitionFrame);
       observer?.disconnect();
       canvas.removeEventListener("webglcontextlost", onContextLost);
       canvas.removeEventListener("webglcontextrestored", onContextRestored);
@@ -753,6 +1020,14 @@ export function initMacropadScene(host: HTMLElement): MacropadScene | null {
       renderer.dispose();
       canvas.remove();
       labels.remove();
+      leaders.forEach((leader) => leader.button.remove());
+      surface.remove();
+      controls.remove();
+      if (caption) {
+        caption.textContent = originalCaption;
+        caption.removeAttribute("aria-live");
+      }
+      delete host.dataset.part;
       host.classList.remove("macropad-scene-ready");
     },
   };

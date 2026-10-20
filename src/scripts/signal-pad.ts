@@ -19,7 +19,7 @@ export function initPad() {
     if (disposed || paused || !visible || document.hidden) return;
     const amount = preference.matches ? 1 : progress;
     piece?.style.setProperty("--pad-open", String(amount));
-    if (note)
+    if (note && !scene)
       note.textContent =
         !preference.matches && amount > 0.98 ? "Scroll to assemble" : "";
     scene?.update({
