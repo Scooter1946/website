@@ -594,6 +594,13 @@ footer p {
 .email-link > span {
   font-size: 30px;
 }
+[data-type] .contact-email {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
 .social-links {
   display: flex;
   gap: 28px;

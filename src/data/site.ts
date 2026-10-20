@@ -94,7 +94,7 @@ export const site = {
       href: "https://cdn.prod.website-files.com/635c470cc81318fc3e9c1e0e/65c3fd9c04db82bd7dc61cd3_DECA-HS-SMG-24-ICDC.pdf",
     },
   ] as Stat[],
-  email: "tulare789@gmail.com",
+  email: "justinchen482@gmail.com",
   links: [
     { label: "GitHub", href: "https://github.com/Scooter1946" },
     {

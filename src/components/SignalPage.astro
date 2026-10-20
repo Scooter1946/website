@@ -47,5 +47,5 @@ const keys = Array.from({length:25}, (_,i)=>({x:26+(i%5)*29,y:24+Math.floor(i/5)
     {site.stats.filter(stat => /Codeforces|LeetCode/.test(stat.label)).map(stat => <li data-accolade>{stat.href ? <a href={stat.href}><strong>{stat.value}</strong><span>{stat.label}<span aria-hidden="true"> ↗</span></span></a> : <><strong>{stat.value}</strong><span>{stat.label}</span></>}</li>)}
   </ul>
 </section></section>
-<footer id="contact"><div><p>Contact</p><a class="email-link" href={`mailto:${site.email}`}>Email me<span aria-hidden="true">↗</span></a></div><div class="social-links">{site.links.map(link=><a href={link.href}>{link.label}<span aria-hidden="true">↗</span></a>)}<a href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
+<footer id="contact"><div><p>Contact</p><a class="email-link" href={`mailto:${site.email}`}>Email me<span aria-hidden="true">↗</span></a><p class="contact-email">{site.email}</p></div><div class="social-links">{site.links.map(link=><a href={link.href}>{link.label}<span aria-hidden="true">↗</span></a>)}<a href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
 </main><script>import '../scripts/signal'; import '../scripts/signal-project-cards';</script></body></html>
